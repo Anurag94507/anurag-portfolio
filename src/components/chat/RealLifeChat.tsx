@@ -115,12 +115,33 @@ const generateNaturalResponse = (userInput: string): { text: string; lang: Suppo
     }
   }
 
+  // Resume / CV Direct Inquiry
+  if (lower.includes('resume') || lower.includes('cv') || lower.includes('biodata')) {
+    switch (lang) {
+      case 'hi':
+        return {
+          text: "आप मेरा आधिकारिक रेज़्युमे सीधे ऊपर नेवबार के 'Resume' बटन से या फिर /resume.pdf लिंक से डाउनलोड कर सकते हैं। इसमें मेरे C-DAC (NVIDIA Jetson & DeepStream), IIIT नया रायपुर (IEEE ICNACT 2026), और CDO अयोध्या के प्रोजेक्ट्स शामिल हैं।",
+          lang,
+        };
+      case 'hinglish':
+        return {
+          text: "Bilkul! Aap mera official resume navbar ke 'Resume' button se ya direct /resume.pdf se download kar sakte hain. Isme mere C-DAC (NVIDIA Jetson & DeepStream), IIIT Naya Raipur research, aur CDO Ayodhya projects ki details hain.",
+          lang,
+        };
+      default:
+        return {
+          text: "You can review and download my latest resume directly from the top navbar 'Resume' button, or by accessing /resume.pdf. It details my work at C-DAC Thiruvananthapuram (NVIDIA Jetson AGX & DeepStream), IIIT Naya Raipur, CDO Ayodhya, and my ICNACT 2026 IEEE publication.",
+          lang,
+        };
+    }
+  }
+
   // Hiring / Job Openings / Engineering Roles
   if (
     lower.includes('hire') || lower.includes('job') || lower.includes('role') ||
     lower.includes('opening') || lower.includes('opportunity') || lower.includes('devops') ||
-    lower.includes('full-stack') || lower.includes('salary') || lower.includes('resume') ||
-    lower.includes('cv') || lower.includes('recruiting') || lower.includes('internship')
+    lower.includes('full-stack') || lower.includes('salary') ||
+    lower.includes('recruiting') || lower.includes('internship')
   ) {
     switch (lang) {
       case 'hi':

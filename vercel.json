@@ -4,6 +4,14 @@
   "outputDirectory": "dist",
   "rewrites": [
     {
+      "source": "/resume",
+      "destination": "/assets/Anurag_Mishra_Resume.pdf"
+    },
+    {
+      "source": "/resume.pdf",
+      "destination": "/assets/Anurag_Mishra_Resume.pdf"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }

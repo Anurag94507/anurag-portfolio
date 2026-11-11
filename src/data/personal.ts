@@ -14,6 +14,7 @@ export interface PersonalInfo {
     location: string;
     cgpaYear1: string;
     cgpaYear2: string;
+    cgpaYear3?: string;
     coursework: string[];
   };
   contact: {
@@ -60,6 +61,7 @@ export const personalInfo: PersonalInfo = {
     location: "Ayodhya, India",
     cgpaYear1: "7.22 CGPA",
     cgpaYear2: "7.05 CGPA",
+    cgpaYear3: "7.12 CGPA",
     coursework: [
       "Data Structures & Algorithms",
       "Object-Oriented Programming",
