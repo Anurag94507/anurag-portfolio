@@ -1,73 +1,107 @@
-import React, { useRef, useState } from 'react';
-import { motion } from 'framer-motion';
+import React, { useRef, useEffect, useState } from 'react';
+import { motion, useMotionValue, useSpring, useTransform, useMotionTemplate } from 'framer-motion';
 
 interface TiltCardProps {
   children: React.ReactNode;
   className?: string;
+  /** Maximum rotation in degrees on either axis. */
+  maxTilt?: number;
+  /** Subtle scale-up while the pointer is inside the card. */
+  hoverScale?: number;
+  /** Set to false to keep the card flat (e.g. dense content). */
+  glare?: boolean;
 }
 
-export const TiltCard: React.FC<TiltCardProps> = ({ children, className = '' }) => {
+/**
+ * Pointer-reactive 3D tilt with spring damping and a moving specular glare.
+ * On touch devices and for reduced-motion users it degrades to a static card,
+ * so mobile scrolling never fights a transform.
+ */
+export const TiltCard: React.FC<TiltCardProps> = ({
+  children,
+  className = '',
+  maxTilt = 9,
+  hoverScale = 1.012,
+  glare = true,
+}) => {
   const cardRef = useRef<HTMLDivElement>(null);
-  const [rotateX, setRotateX] = useState(0);
-  const [rotateY, setRotateY] = useState(0);
-  const [glarePosition, setGlarePosition] = useState({ x: 50, y: 50, opacity: 0 });
+  const [isInteractive, setIsInteractive] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!cardRef.current) return;
+  const pointerX = useMotionValue(0.5);
+  const pointerY = useMotionValue(0.5);
+  const lift = useMotionValue(0);
+
+  useEffect(() => {
+    const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const pointerQuery = window.matchMedia('(hover: hover) and (pointer: fine)');
+    const sync = () => setIsInteractive(!motionQuery.matches && pointerQuery.matches);
+    sync();
+    motionQuery.addEventListener?.('change', sync);
+    pointerQuery.addEventListener?.('change', sync);
+    return () => {
+      motionQuery.removeEventListener?.('change', sync);
+      pointerQuery.removeEventListener?.('change', sync);
+    };
+  }, []);
+
+  const springConfig = { stiffness: 160, damping: 18, mass: 0.4 };
+  const rotateX = useSpring(
+    useTransform(pointerY, [0, 1], [maxTilt, -maxTilt]),
+    springConfig
+  );
+  const rotateY = useSpring(
+    useTransform(pointerX, [0, 1], [-maxTilt, maxTilt]),
+    springConfig
+  );
+  const scale = useSpring(lift, springConfig);
+
+  const glareX = useTransform(pointerX, [0, 1], ['0%', '100%']);
+  const glareY = useTransform(pointerY, [0, 1], ['0%', '100%']);
+  const glareBackground = useMotionTemplate`radial-gradient(circle at ${glareX} ${glareY}, rgba(255,255,255,0.35) 0%, rgba(255,255,255,0.06) 38%, transparent 62%)`;
+
+  const handlePointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (!isInteractive || event.pointerType === 'touch' || !cardRef.current) return;
     const rect = cardRef.current.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
-
-    const rotX = ((y - centerY) / centerY) * -10;
-    const rotY = ((x - centerX) / centerX) * 10;
-
-    setRotateX(rotX);
-    setRotateY(rotY);
-
-    const glareX = (x / rect.width) * 100;
-    const glareY = (y / rect.height) * 100;
-    setGlarePosition({ x: glareX, y: glareY, opacity: 0.15 });
+    if (!rect.width || !rect.height) return;
+    pointerX.set(Math.min(Math.max((event.clientX - rect.left) / rect.width, 0), 1));
+    pointerY.set(Math.min(Math.max((event.clientY - rect.top) / rect.height, 0), 1));
   };
 
-  const handleMouseLeave = () => {
-    setRotateX(0);
-    setRotateY(0);
-    setGlarePosition((prev) => ({ ...prev, opacity: 0 }));
+  const reset = () => {
+    pointerX.set(0.5);
+    pointerY.set(0.5);
+    lift.set(1);
+    setIsHovered(false);
   };
 
   return (
-    <div
-      style={{ perspective: '1000px' }}
-      className="w-full"
-    >
+    <div style={{ perspective: '1200px' }} className="w-full h-full">
       <motion.div
         ref={cardRef}
-        onMouseMove={handleMouseMove}
-        onMouseLeave={handleMouseLeave}
-        animate={{
-          rotateX,
-          rotateY,
+        onPointerMove={handlePointerMove}
+        onPointerEnter={(event) => {
+          if (!isInteractive || event.pointerType === 'touch') return;
+          setIsHovered(true);
+          lift.set(hoverScale);
         }}
-        transition={{
-          type: 'spring',
-          stiffness: 300,
-          damping: 25,
-          mass: 0.5,
+        onPointerLeave={reset}
+        onBlur={reset}
+        style={{
+          rotateX: isInteractive ? rotateX : 0,
+          rotateY: isInteractive ? rotateY : 0,
+          scale: isInteractive ? scale : 1,
+          transformStyle: 'preserve-3d',
         }}
-        className={`relative overflow-hidden transition-shadow duration-300 ${className}`}
-        style={{ transformStyle: 'preserve-3d' }}
+        className={`relative overflow-hidden transition-shadow duration-300 h-full ${className}`}
       >
-        {/* Specular glare overlay */}
-        <div
-          className="absolute inset-0 pointer-events-none rounded-3xl transition-opacity duration-300 z-30"
-          style={{
-            opacity: glarePosition.opacity,
-            background: `radial-gradient(circle at ${glarePosition.x}% ${glarePosition.y}%, rgba(255, 255, 255, 0.45) 0%, transparent 60%)`,
-          }}
-        />
+        {glare && isInteractive && (
+          <motion.div
+            className="absolute inset-0 pointer-events-none rounded-[inherit] z-30 mix-blend-overlay"
+            style={{ background: glareBackground, opacity: isHovered ? 1 : 0 }}
+            transition={{ opacity: { duration: 0.25 } }}
+          />
+        )}
         {children}
       </motion.div>
     </div>

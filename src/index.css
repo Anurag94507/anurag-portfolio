@@ -4,29 +4,193 @@
 
 @layer base {
   :root {
-    --bg-base: #060A17;
-    --bg-surface: #0B1226;
-    --text-main: #F1F5F9;
-    --text-muted: #94A3B8;
-    --border-color: rgba(255, 255, 255, 0.08);
+    --bg-base: #0B0A09;
+    --bg-surface: #141210;
+    --text-main: #F5EFE6;
+    --text-muted: #A8A093;
+    --border-color: rgba(245, 239, 230, 0.09);
+    --ember: #FF7A45;
+    --amber: #F0A24B;
+    --sand: #E7C79A;
   }
 
   html.light {
-    --bg-base: #F8FAFD;
-    --bg-surface: #FFFFFF;
-    --text-main: #0F172A;
-    --text-muted: #475569;
-    --border-color: rgba(203, 213, 225, 0.8);
+    --bg-base: #F6F1E8;
+    --bg-surface: #FFFDF8;
+    --text-main: #1B1714;
+    --text-muted: #6B6157;
+    --border-color: rgba(214, 204, 189, 0.9);
   }
 
   html {
     scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
   }
 
   body {
     background-color: var(--bg-base);
     color: var(--text-main);
     transition: background-color 0.3s ease, color 0.3s ease;
+    overflow-x: hidden;
+  }
+
+  /* Keep wide decorative glows from creating horizontal scroll on phones */
+  #root {
+    overflow-x: clip;
+  }
+}
+
+/* ========================================================
+   3D STAGE UTILITIES (perspective + depth layers)
+   ======================================================== */
+.perspective-1000 {
+  perspective: 1000px;
+  perspective-origin: 50% 50%;
+}
+
+.perspective-1400 {
+  perspective: 1400px;
+}
+
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+
+.depth-layer {
+  transform: translateZ(45px);
+}
+
+.depth-layer-sm {
+  transform: translateZ(22px);
+}
+
+/* Layered floating chip used around the hero avatar */
+.hero-chip {
+  background: rgba(25, 22, 19, 0.86);
+  border: 1px solid rgba(255, 122, 69, 0.32);
+  box-shadow: 0 12px 30px -12px rgba(255, 122, 69, 0.55);
+  backdrop-filter: blur(10px);
+}
+
+.tilt-3d {
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+/* Constrained 3D plane that sways on its own (adds depth without JS) */
+.slab-3d {
+  transform-style: preserve-3d;
+  animation: custom-sway 11s ease-in-out infinite;
+  will-change: transform;
+}
+
+@keyframes custom-sway {
+  0%, 100% {
+    transform: perspective(1200px) rotateX(7deg) rotateY(-8deg) translateZ(0);
+  }
+  50% {
+    transform: perspective(1200px) rotateX(-4deg) rotateY(6deg) translateZ(20px);
+  }
+}
+
+/* Rotating conic orbit ring — continuous motion around the avatar */
+.ring-orbit {
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    rgba(255, 122, 69, 0.65) 38deg,
+    transparent 96deg,
+    transparent 190deg,
+    rgba(231, 199, 154, 0.55) 244deg,
+    transparent 300deg
+  );
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 2px));
+  mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 2px));
+  animation: ring-spin 16s linear infinite;
+  will-change: transform;
+}
+
+@keyframes ring-spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ring-orbit { animation: none; }
+}
+
+/* Warm aurora field behind the hero */
+.aurora-field {
+  background:
+    radial-gradient(38% 44% at 22% 28%, rgba(255, 122, 69, 0.22) 0%, transparent 70%),
+    radial-gradient(32% 38% at 78% 24%, rgba(240, 162, 75, 0.18) 0%, transparent 72%),
+    radial-gradient(46% 46% at 58% 78%, rgba(231, 199, 154, 0.14) 0%, transparent 74%);
+  animation: aurora 20s ease-in-out infinite alternate;
+  will-change: transform, opacity;
+}
+
+@keyframes aurora {
+  0% { transform: translate3d(-3%, -2%, 0) scale(1); opacity: 0.6; }
+  50% { transform: translate3d(3%, 2%, 0) scale(1.12); opacity: 0.9; }
+  100% { transform: translate3d(-2%, 3%, 0) scale(1.04); opacity: 0.65; }
+}
+
+/* Light sweep across primary buttons */
+.btn-sheen {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.btn-sheen::after {
+  content: '';
+  position: absolute;
+  inset: -40% -10%;
+  background: linear-gradient(
+    100deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.42) 48%,
+    transparent 62%
+  );
+  transform: translateX(-130%) skewX(-18deg);
+  animation: sheen 3.8s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.btn-sheen > * {
+  position: relative;
+  z-index: 2;
+}
+
+@keyframes sheen {
+  0% { transform: translateX(-130%) skewX(-18deg); }
+  55%, 100% { transform: translateX(230%) skewX(-18deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tilt-3d,
+  .slab-3d,
+  .aurora-field,
+  .btn-sheen::after {
+    animation: none !important;
+    transform: none !important;
+    will-change: auto;
+  }
+}
+
+/* Editorial serif headings — a deliberate break from the usual AI-portfolio sans */
+h1.font-display,
+h2.font-display {
+  font-family: 'Fraunces', 'Iowan Old Style', Georgia, serif !important;
+  font-weight: 600;
+  letter-spacing: -0.018em;
+  font-variation-settings: 'SOFT' 40, 'WONK' 1;
+}
+
+@media (max-width: 640px) {
+  h1.font-display,
+  h2.font-display {
+    letter-spacing: -0.01em;
   }
 }
 
@@ -53,47 +217,47 @@
   width: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #060A17;
+  background: #0B0A09;
 }
 .light ::-webkit-scrollbar-track {
-  background: #F1F5F9;
+  background: #F2ECE2;
 }
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #00F5FF, #8B5CF6);
+  background: linear-gradient(180deg, #FF7A45, #E7C79A);
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, #38BDF8, #A855F7);
+  background: linear-gradient(180deg, #F0A24B, #FF9E6B);
 }
 
-/* Glassmorphism Styles */
+/* Glassmorphism Styles — warm smoked glass, not blue */
 .glass-panel {
-  background: rgba(11, 18, 38, 0.82);
+  background: rgba(20, 18, 16, 0.86);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(245, 239, 230, 0.1);
 }
 
 .glass-card {
-  background: rgba(12, 19, 39, 0.75);
+  background: rgba(25, 22, 19, 0.72);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(245, 239, 230, 0.08);
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .glass-card:hover {
-  border-color: rgba(0, 245, 255, 0.35);
-  box-shadow: 0 16px 36px -10px rgba(0, 245, 255, 0.18);
+  border-color: rgba(255, 122, 69, 0.38);
+  box-shadow: 0 18px 40px -14px rgba(255, 122, 69, 0.22);
 }
 
-/* Glowing Neon Text */
+/* Glowing accent text */
 .neon-text-cyan {
-  text-shadow: 0 0 20px rgba(0, 245, 255, 0.5);
+  text-shadow: 0 0 22px rgba(255, 122, 69, 0.5);
 }
 
 .gradient-text {
-  background: linear-gradient(135deg, #00F5FF 0%, #818CF8 50%, #C084FC 100%);
+  background: linear-gradient(120deg, #FF7A45 0%, #F0A24B 46%, #E7C79A 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -104,126 +268,161 @@
 }
 
 /* ========================================================
-   LIGHT MODE: 100% READABILITY & HIGH CONTRAST ENGINE
+   LIGHT MODE: WARM PAPER THEME
    ======================================================== */
 html.light body,
 html.light main,
 html.light .min-h-screen {
-  background-color: #F8FAFD !important;
-  color: #0F172A !important;
+  background-color: #F6F1E8 !important;
+  color: #1B1714 !important;
 }
 
-/* Ensure all headings in light mode are dark obsidian navy */
 html.light h1,
 html.light h2,
 html.light h3,
 html.light h4,
 html.light h5,
 html.light h6 {
-  color: #0F172A !important;
+  color: #1B1714 !important;
 }
 
-/* Override hardcoded text-white in light mode */
 html.light .text-white {
-  color: #0F172A !important;
+  color: #1B1714 !important;
 }
 
-/* Readable body text */
-html.light .text-slate-100,
-html.light .text-slate-200,
-html.light .text-slate-300 {
-  color: #334155 !important;
+html.light .text-stone-100,
+html.light .text-stone-200,
+html.light .text-stone-300 {
+  color: #3B332C !important;
 }
 
-/* Readable muted metadata */
-html.light .text-slate-400,
-html.light .text-slate-500 {
-  color: #64748B !important;
+html.light .text-stone-400,
+html.light .text-stone-500 {
+  color: #6B6157 !important;
 }
 
-/* Light Mode Glass Cards: Pearlescent Crisp Surface */
 html.light .glass-card {
-  background: rgba(255, 255, 255, 0.94) !important;
-  border: 1px solid rgba(226, 232, 240, 0.9) !important;
-  box-shadow: 0 10px 30px -5px rgba(15, 23, 42, 0.08), 0 4px 6px -2px rgba(15, 23, 42, 0.04) !important;
-  color: #0F172A !important;
+  background: rgba(255, 253, 248, 0.95) !important;
+  border: 1px solid rgba(222, 211, 194, 0.95) !important;
+  box-shadow: 0 12px 32px -12px rgba(80, 55, 30, 0.14) !important;
+  color: #1B1714 !important;
 }
 
 html.light .glass-card:hover {
-  border-color: rgba(99, 102, 241, 0.4) !important;
-  box-shadow: 0 18px 40px -10px rgba(99, 102, 241, 0.16) !important;
+  border-color: rgba(255, 122, 69, 0.55) !important;
+  box-shadow: 0 18px 40px -12px rgba(194, 65, 12, 0.18) !important;
 }
 
-/* Light Mode Glass Panels */
 html.light .glass-panel {
-  background: rgba(255, 255, 255, 0.96) !important;
-  border: 1px solid rgba(226, 232, 240, 0.95) !important;
-  box-shadow: 0 14px 40px -10px rgba(15, 23, 42, 0.1) !important;
-  color: #0F172A !important;
+  background: rgba(255, 253, 248, 0.97) !important;
+  border: 1px solid rgba(222, 211, 194, 0.95) !important;
+  box-shadow: 0 14px 40px -14px rgba(80, 55, 30, 0.18) !important;
+  color: #1B1714 !important;
 }
 
-/* Light Mode Gradients */
 html.light .gradient-text {
-  background: linear-gradient(135deg, #0284C7 0%, #4F46E5 50%, #7C3AED 100%) !important;
+  background: linear-gradient(120deg, #C2410C 0%, #B45309 52%, #8A5A2B 100%) !important;
   -webkit-background-clip: text !important;
   -webkit-text-fill-color: transparent !important;
 }
 
-/* Light Mode Dark Overlays replacement */
-html.light .bg-slate-950,
-html.light .bg-slate-900,
-html.light .bg-slate-900\/60,
-html.light .bg-slate-900\/80,
-html.light .bg-slate-900\/90,
+html.light .aurora-field {
+  opacity: 0.5;
+  filter: saturate(0.75);
+}
+
+html.light .bg-stone-950,
+html.light .bg-stone-900,
+html.light .bg-stone-900\/60,
+html.light .bg-stone-900\/80,
+html.light .bg-stone-900\/90,
 html.light .bg-dark-bg {
-  background-color: #F1F5F9 !important;
-  color: #0F172A !important;
+  background-color: #F2ECE2 !important;
+  color: #1B1714 !important;
 }
 
-html.light .bg-slate-800,
-html.light .bg-slate-800\/80,
-html.light .bg-slate-800\/60 {
-  background-color: #E2E8F0 !important;
-  color: #0F172A !important;
+html.light .bg-stone-800,
+html.light .bg-stone-800\/80,
+html.light .bg-stone-800\/60 {
+  background-color: #E4DCD0 !important;
+  color: #1B1714 !important;
 }
 
-/* Light Mode Input & Textarea Elements */
 html.light input,
 html.light textarea {
   background-color: #FFFFFF !important;
-  color: #0F172A !important;
-  border-color: #CBD5E1 !important;
+  color: #1B1714 !important;
+  border-color: #D6CCBD !important;
 }
 
 html.light input:focus,
 html.light textarea:focus {
-  border-color: #4F46E5 !important;
-  box-shadow: 0 0 15px rgba(99, 102, 241, 0.25) !important;
+  border-color: #C2410C !important;
+  box-shadow: 0 0 15px rgba(194, 65, 12, 0.22) !important;
 }
 
 html.light input::placeholder,
 html.light textarea::placeholder {
-  color: #94A3B8 !important;
+  color: #8D8378 !important;
 }
 
-/* Light Mode Borders */
+html.light .hero-chip {
+  background: rgba(255, 253, 248, 0.92) !important;
+  border-color: rgba(194, 65, 12, 0.28) !important;
+  box-shadow: 0 12px 28px -14px rgba(194, 65, 12, 0.4) !important;
+  color: #1B1714 !important;
+}
+
 html.light .border-white\/5,
 html.light .border-white\/10,
 html.light .border-white\/15,
 html.light .border-white\/20,
-html.light .border-slate-800 {
-  border-color: rgba(203, 213, 225, 0.85) !important;
+html.light .border-stone-800 {
+  border-color: rgba(214, 204, 189, 0.9) !important;
 }
 
-/* Light Mode Footer */
 html.light footer {
-  background-color: #F1F5F9 !important;
-  border-top-color: #E2E8F0 !important;
-  color: #334155 !important;
+  background-color: #F2ECE2 !important;
+  border-top-color: #E4DCD0 !important;
+  color: #3B332C !important;
 }
 
 html.light footer .text-white {
-  color: #0F172A !important;
+  color: #1B1714 !important;
+}
+
+/* ========================================================
+   RESPONSIVE REFINEMENTS
+   ======================================================== */
+@media (max-width: 768px) {
+  /* Heavy backdrop blurs are the biggest mobile paint cost */
+  .glass-panel {
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+  .glass-card {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+  .bg-grain {
+    opacity: 0.18 !important;
+  }
+  .tilt-3d,
+  .slab-3d {
+    transform: none !important;
+    animation: none !important;
+  }
+}
+
+@media (max-width: 400px) {
+  .glass-card {
+    border-radius: 1rem;
+  }
+}
+
+/* Pause the skills marquee while a visitor reads a pill */
+.animate-marquee:hover {
+  animation-play-state: paused;
 }
 
 /* Hide custom cursor on touch devices */

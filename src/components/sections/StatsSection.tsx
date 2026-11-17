@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { personalInfo } from '../../data/personal';
+import { TiltCard } from '../ui/TiltCard';
 import { Layers, ShieldAlert, Award, Briefcase } from 'lucide-react';
 
 interface CounterProps {
@@ -62,16 +63,21 @@ export const StatsSection: React.FC = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: '-40px' }}
                 transition={{ delay: idx * 0.12, duration: 0.6 }}
-                className="relative group p-6 rounded-2xl glass-card overflow-hidden border border-white/10 hover:border-neon-cyan/40 hover:shadow-glow-cyan transition-all duration-300"
+                className="relative group h-full"
               >
+                <TiltCard
+                  maxTilt={7}
+                  hoverScale={1.02}
+                  className="p-6 rounded-2xl glass-card overflow-hidden border border-white/10 hover:border-neon-cyan/40 hover:shadow-glow-cyan transition-all duration-300"
+                >
                 {/* Glow backdrop */}
                 <div className="absolute -top-12 -right-12 w-28 h-28 bg-neon-cyan/10 rounded-full blur-2xl group-hover:bg-neon-cyan/20 transition-all duration-300" />
 
                 <div className="flex items-center justify-between mb-4">
-                  <div className="p-3 rounded-xl bg-slate-800/80 border border-white/5 text-neon-cyan group-hover:scale-110 group-hover:text-white group-hover:bg-neon-cyan/20 transition-all">
+                  <div className="p-3 rounded-xl bg-stone-800/80 border border-white/5 text-neon-cyan group-hover:scale-110 group-hover:text-white group-hover:bg-neon-cyan/20 transition-all">
                     <Icon className="w-5 h-5" />
                   </div>
-                  <span className="text-[11px] font-mono uppercase tracking-wider text-slate-400">
+                  <span className="text-[11px] font-mono uppercase tracking-wider text-stone-400">
                     Metric 0{idx + 1}
                   </span>
                 </div>
@@ -84,13 +90,14 @@ export const StatsSection: React.FC = () => {
                   />
                 </div>
 
-                <h2 className="text-sm font-semibold text-slate-200 mt-2 font-display">
+                <h2 className="text-sm font-semibold text-stone-200 mt-2 font-display">
                   {stat.label}
                 </h2>
 
-                <p className="text-xs text-slate-400 mt-1 leading-relaxed">
+                <p className="text-xs text-stone-400 mt-1 leading-relaxed">
                   {stat.description}
                 </p>
+                </TiltCard>
               </motion.div>
             );
           })}

@@ -64,7 +64,7 @@ export const ExperienceSection: React.FC = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
-            className="mt-4 max-w-xl text-slate-400 text-sm sm:text-base leading-relaxed"
+            className="mt-4 max-w-xl text-stone-400 text-sm sm:text-base leading-relaxed"
           >
             From high-availability telemetry at national research centers to applied AI research and civic technology deployments.
           </motion.p>
@@ -73,10 +73,10 @@ export const ExperienceSection: React.FC = () => {
         {/* Timeline Container */}
         <div className="relative">
           {/* Animated SVG Path / Line */}
-          <div className="absolute left-4 md:left-1/2 top-4 bottom-4 w-0.5 -translate-x-1/2 bg-slate-800">
+          <div className="absolute left-4 md:left-1/2 top-4 bottom-4 w-0.5 -transtone-x-1/2 bg-stone-800">
             <motion.div
               style={{ scaleY, originY: 0 }}
-              className="w-full h-full bg-gradient-to-b from-neon-cyan via-indigo-500 to-neon-violet shadow-[0_0_12px_#00F0FF]"
+              className="w-full h-full bg-gradient-to-b from-neon-cyan via-neon-cyan to-neon-violet shadow-[0_0_12px_#FF7A45]"
             />
           </div>
 
@@ -98,7 +98,7 @@ export const ExperienceSection: React.FC = () => {
                     whileInView={{ scale: 1 }}
                     viewport={{ once: true, margin: '-60px' }}
                     transition={{ delay: 0.2, type: 'spring', stiffness: 300, damping: 20 }}
-                    className="absolute left-4 md:left-1/2 top-6 -translate-x-1/2 z-20 w-9 h-9 rounded-full p-0.5 bg-gradient-to-tr from-neon-cyan to-neon-violet shadow-[0_0_15px_#00F0FF]"
+                    className="absolute left-4 md:left-1/2 top-6 -transtone-x-1/2 z-20 w-9 h-9 rounded-full p-0.5 bg-gradient-to-tr from-neon-cyan to-neon-violet shadow-[0_0_15px_#FF7A45]"
                   >
                     <div className="w-full h-full rounded-full bg-dark-bg flex items-center justify-center text-neon-cyan">
                       {iconMap[exp.icon] || <Briefcase className="w-4 h-4" />}
@@ -124,8 +124,8 @@ export const ExperienceSection: React.FC = () => {
                         <span className="px-3 py-1 rounded-full text-xs font-mono font-medium bg-neon-cyan/15 text-neon-cyan border border-neon-cyan/30">
                           {exp.badge}
                         </span>
-                        <div className="flex items-center gap-1.5 text-xs font-mono text-slate-400">
-                          <Calendar className="w-3.5 h-3.5 text-slate-500" />
+                        <div className="flex items-center gap-1.5 text-xs font-mono text-stone-400">
+                          <Calendar className="w-3.5 h-3.5 text-stone-500" />
                           <span>{exp.period}</span>
                         </div>
                       </div>
@@ -134,18 +134,18 @@ export const ExperienceSection: React.FC = () => {
                       <h3 className="text-lg sm:text-xl font-display font-bold text-white group-hover:text-neon-cyan transition-colors">
                         {exp.role}
                       </h3>
-                      <h4 className="text-sm font-medium text-slate-300 mt-1 flex items-center gap-1.5">
+                      <h4 className="text-sm font-medium text-stone-300 mt-1 flex items-center gap-1.5">
                         <span>{exp.organization}</span>
                       </h4>
-                      <div className="flex items-center gap-1 text-xs text-slate-400 mt-0.5 mb-4">
-                        <MapPin className="w-3 h-3 text-slate-500" />
+                      <div className="flex items-center gap-1 text-xs text-stone-400 mt-0.5 mb-4">
+                        <MapPin className="w-3 h-3 text-stone-500" />
                         <span>{exp.location}</span>
                       </div>
 
                       {/* Bullet points */}
                       <ul className="space-y-2.5 my-4">
                         {exp.description.map((bullet, bIdx) => (
-                          <li key={bIdx} className="flex items-start gap-2.5 text-xs sm:text-sm text-slate-300/90 leading-relaxed">
+                          <li key={bIdx} className="flex items-start gap-2.5 text-xs sm:text-sm text-stone-300/90 leading-relaxed">
                             <CheckCircle className="w-4 h-4 text-neon-cyan flex-shrink-0 mt-0.5" />
                             <span>{bullet}</span>
                           </li>
@@ -153,11 +153,11 @@ export const ExperienceSection: React.FC = () => {
                       </ul>
 
                       {/* Skill tags */}
-                      <div className="flex flex-wrap gap-1.5 pt-4 border-t border-slate-800">
+                      <div className="flex flex-wrap gap-1.5 pt-4 border-t border-stone-800">
                         {exp.skills.map((skill) => (
                           <span
                             key={skill}
-                            className="px-2.5 py-1 rounded-lg bg-slate-900/80 border border-white/5 text-[11px] font-mono text-slate-300 group-hover:border-neon-cyan/20 transition-colors"
+                            className="px-2.5 py-1 rounded-lg bg-stone-900/80 border border-white/5 text-[11px] font-mono text-stone-300 group-hover:border-neon-cyan/20 transition-colors"
                           >
                             {skill}
                           </span>

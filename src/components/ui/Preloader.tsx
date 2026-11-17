@@ -64,13 +64,13 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
           ease: [0.77, 0, 0.175, 1]
         }
       }}
-      className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-[#070b14] text-slate-100 select-none overflow-hidden"
+      className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-[#080706] text-stone-100 select-none overflow-hidden"
     >
       {/* Subtle animated grid background */}
       <div className="absolute inset-0 opacity-20 bg-[linear-gradient(to_right,#1e293b_1px,transparent_1px),linear-gradient(to_bottom,#1e293b_1px,transparent_1px)] bg-[size:3.5rem_3.5rem]" />
 
       {/* Cybernetic ambient radial glows */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-gradient-to-tr from-neon-cyan/20 via-indigo-600/15 to-neon-violet/20 blur-[130px] rounded-full pointer-events-none" />
+      <div className="absolute top-1/4 left-1/2 -transtone-x-1/2 -transtone-y-1/2 w-[500px] h-[500px] bg-gradient-to-tr from-neon-cyan/20 via-neon-amber/15 to-neon-violet/20 blur-[130px] rounded-full pointer-events-none" />
 
       <div className="relative z-10 flex flex-col items-center max-w-md w-full px-6 text-center">
         {/* Holographic Avatar / Crest */}
@@ -79,7 +79,7 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
             initial={{ scale: 0.85, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
-            className="relative w-24 h-24 rounded-full p-1 bg-gradient-to-tr from-neon-cyan via-indigo-500 to-neon-violet shadow-[0_0_40px_rgba(0,240,255,0.4)]"
+            className="relative w-24 h-24 rounded-full p-1 bg-gradient-to-tr from-neon-cyan via-neon-cyan to-neon-violet shadow-[0_0_40px_rgba(255,122,69,0.4)]"
           >
             <img
               src={personalInfo.avatarUrl}
@@ -108,10 +108,10 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
           transition={{ delay: 0.15, duration: 0.5 }}
           className="space-y-1.5 mb-6"
         >
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-900/80 border border-slate-700/60 text-[11px] font-mono text-slate-300">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-stone-900/80 border border-stone-700/60 text-[11px] font-mono text-stone-300">
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
             <span className="text-emerald-400 font-semibold">{logs[logIndex].phase}</span>
-            <span className="text-slate-500">•</span>
+            <span className="text-stone-500">•</span>
             <span>SYSTEM INITIALIZATION</span>
           </div>
 
@@ -119,7 +119,7 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
             ANURAG <span className="gradient-text">MISHRA</span>
           </h1>
 
-          <p className="text-xs tracking-[0.2em] font-mono text-slate-400 uppercase">
+          <p className="text-xs tracking-[0.2em] font-mono text-stone-400 uppercase">
             DevOps &bull; Full-Stack &bull; Applied AI/ML
           </p>
         </motion.div>
@@ -127,7 +127,7 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
         {/* Progress Gauge */}
         <div className="w-full max-w-xs space-y-2 mb-4">
           <div className="flex items-center justify-between text-xs font-mono">
-            <span className="text-slate-400 flex items-center gap-1.5">
+            <span className="text-stone-400 flex items-center gap-1.5">
               <CurrentIcon className="w-3.5 h-3.5 text-neon-cyan" />
               <span>DIAGNOSTIC STATUS</span>
             </span>
@@ -137,9 +137,9 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
           </div>
 
           {/* Progress bar with glowing shimmer */}
-          <div className="relative w-full h-2 bg-slate-900/90 rounded-full overflow-hidden p-0.5 border border-slate-700/60 shadow-inner">
+          <div className="relative w-full h-2 bg-stone-900/90 rounded-full overflow-hidden p-0.5 border border-stone-700/60 shadow-inner">
             <motion.div
-              className="h-full bg-gradient-to-r from-neon-cyan via-indigo-500 to-neon-violet rounded-full shadow-[0_0_15px_#00F0FF] relative"
+              className="h-full bg-gradient-to-r from-neon-cyan via-neon-cyan to-neon-violet rounded-full shadow-[0_0_15px_#FF7A45] relative"
               style={{ width: `${progress}%` }}
               transition={{ ease: "easeOut" }}
             >
@@ -153,24 +153,24 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
           key={logIndex}
           initial={{ opacity: 0, y: 5 }}
           animate={{ opacity: 1, y: 0 }}
-          className="h-8 flex items-center justify-center text-[11px] font-mono text-slate-400 max-w-sm px-2 text-center"
+          className="h-8 flex items-center justify-center text-[11px] font-mono text-stone-400 max-w-sm px-2 text-center"
         >
-          <span className="text-slate-500 mr-1.5">&gt;</span>
-          <span className="text-slate-300 font-medium truncate">{logs[logIndex].text}</span>
+          <span className="text-stone-500 mr-1.5">&gt;</span>
+          <span className="text-stone-300 font-medium truncate">{logs[logIndex].text}</span>
         </motion.div>
       </div>
 
       {/* Decorative cyber corner accents */}
-      <div className="absolute top-6 left-6 text-[10px] font-mono text-slate-600 hidden sm:block">
+      <div className="absolute top-6 left-6 text-[10px] font-mono text-stone-600 hidden sm:block">
         SYS.VER 2.6.0 // ARCH: EDGE-HYBRID
       </div>
-      <div className="absolute top-6 right-6 text-[10px] font-mono text-slate-600 hidden sm:block">
+      <div className="absolute top-6 right-6 text-[10px] font-mono text-stone-600 hidden sm:block">
         PORT: 5173 // LATENCY: 12ms
       </div>
-      <div className="absolute bottom-6 left-6 text-[10px] font-mono text-slate-600 hidden sm:block">
+      <div className="absolute bottom-6 left-6 text-[10px] font-mono text-stone-600 hidden sm:block">
         LOCATION: AYODHYA &bull; SULTANPUR, IN
       </div>
-      <div className="absolute bottom-6 right-6 text-[10px] font-mono text-slate-600 hidden sm:block">
+      <div className="absolute bottom-6 right-6 text-[10px] font-mono text-stone-600 hidden sm:block">
         OPEN: DEVOPS &bull; FULL-STACK &bull; AI
       </div>
     </motion.div>

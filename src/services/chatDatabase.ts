@@ -8,6 +8,7 @@ export interface StoredChatMessage {
   text: string;
   timestamp: string;
   language?: string;
+  chips?: string[];
 }
 
 export interface ChatSession {

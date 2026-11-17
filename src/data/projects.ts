@@ -30,7 +30,7 @@ export const projects: ProjectItem[] = [
     language: "TypeScript",
     image: "/assets/projects/portfolio.png",
     technologies: ["React 19", "TypeScript", "Tailwind CSS", "Framer Motion", "Three.js", "IndexedDB", "Node.js"],
-    gradient: "from-cyan-500/25 via-violet-600/15 to-emerald-900/30",
+    gradient: "from-neon-cyan/25 via-neon-cyan/15 to-emerald-900/30",
     description: "Personal flagship web ecosystem engineered with modern 3D physics, gyro card depth, a multi-lingual AI conversational assistant, multi-page routing with breadcrumb history, and persistent client-side database storage with cloud sync.",
     highlights: [
       "Interactive multi-lingual AI companion capable of auto-detecting language (Hindi, English, Hinglish, Spanish, French, etc.) with natural conversational fluency.",
@@ -57,7 +57,7 @@ export const projects: ProjectItem[] = [
     language: "JavaScript",
     image: "/assets/projects/herdintel.jpg",
     technologies: ["React.js", "Node.js", "Express.js", "MongoDB", "Chart.js", "Tailwind CSS"],
-    gradient: "from-cyan-500/20 via-blue-600/10 to-indigo-900/30",
+    gradient: "from-neon-cyan/20 via-blue-600/10 to-dark-card/30",
     description: "Full-stack livestock intelligence platform designed to monitor dairy cattle welfare, detect isolation risks, and visualize herd social-network graphs. Backed by an IEEE paper co-authored and presented at ICNACT 2026.",
     highlights: [
       "Backed by an IEEE-format research paper presented at ICNACT 2026 (VIT Bhopal University).",
@@ -83,7 +83,7 @@ export const projects: ProjectItem[] = [
     language: "TypeScript",
     image: "/assets/projects/ayodhya.jpg",
     technologies: ["React (TypeScript)", "Vite", "Node.js", "Express.js", "Tailwind CSS"],
-    gradient: "from-amber-500/20 via-orange-600/10 to-violet-900/30",
+    gradient: "from-amber-500/20 via-orange-600/10 to-dark-card/30",
     description: "A fast, fully-typed modern web application exploring Ayodhya's historical temples, sanctified ghats, and spiritual heritage sites. Features dynamic map routing, rich multimedia narratives, and decoupled client-server architecture.",
     highlights: [
       "Independently engineered and version-controlled with complete TypeScript safety.",
@@ -108,7 +108,7 @@ export const projects: ProjectItem[] = [
     language: "TypeScript",
     image: "/assets/projects/shg_inventory.jpg",
     technologies: ["TypeScript", "React", "Node.js", "Express", "MongoDB", "QR Scanning API"],
-    gradient: "from-purple-500/20 via-fuchsia-600/10 to-slate-900/30",
+    gradient: "from-neon-cyan/20 via-neon-violet/10 to-stone-900/30",
     description: "Custom enterprise inventory and billing solution built for the Chief Development Office (CDO) Ayodhya and Ayodhya Airport outlets to track multi-facility stock, real-time product valuations, and rural producer profits.",
     highlights: [
       "Role-Based Access Control (RBAC) separating administrative officials and Self-Help Group leads.",
@@ -133,7 +133,7 @@ export const projects: ProjectItem[] = [
     language: "Python",
     image: "/assets/projects/restaurant.jpg",
     technologies: ["Python", "Flask / Django", "SQLite / MySQL", "REST APIs", "CRUD Engine"],
-    gradient: "from-blue-500/20 via-indigo-600/10 to-cyan-900/30",
+    gradient: "from-blue-500/20 via-neon-amber/10 to-cyan-900/30",
     description: "Comprehensive culinary hospitality and management engine built with Python. Features table reservation scheduling, automated customer bill computation with tax logic, inventory alert thresholds, and staff roster management.",
     highlights: [
       "Modular Python backend architecture with clean separation of business logic and data persistence.",
@@ -158,7 +158,7 @@ export const projects: ProjectItem[] = [
     language: "TypeScript",
     image: "/assets/projects/ayodhya.jpg",
     technologies: ["TypeScript", "React", "Node.js", "Express", "CSS3"],
-    gradient: "from-rose-500/20 via-pink-600/10 to-slate-900/30",
+    gradient: "from-rose-500/20 via-pink-600/10 to-stone-900/30",
     description: "The initial open-source repository establishing the cultural information schema, temple geospatial coordinates, and historical content pipeline for Ayodhya exploration.",
     highlights: [
       "Structured JSON schema modeling 50+ historical monuments, ghats, and cultural milestones.",
@@ -181,7 +181,7 @@ export const projects: ProjectItem[] = [
     language: "HTML / JS",
     image: "/assets/projects/cellstart.jpg",
     technologies: ["HTML5", "CSS3", "JavaScript", "Responsive Design", "Flexbox/Grid"],
-    gradient: "from-teal-500/20 via-emerald-600/10 to-slate-900/30",
+    gradient: "from-teal-500/20 via-emerald-600/10 to-stone-900/30",
     description: "Modern, responsive static web platform engineered for curriculum showcase, interactive module registration, and student resource downloads.",
     highlights: [
       "Clean semantic HTML5 structure with high accessibility and SEO optimization.",
@@ -204,7 +204,7 @@ export const projects: ProjectItem[] = [
     language: "TypeScript",
     image: "/assets/projects/ecommerce.jpg",
     technologies: ["React (TypeScript)", "Redux Toolkit", "Node.js", "Express.js", "MongoDB", "JWT"],
-    gradient: "from-emerald-500/20 via-teal-600/10 to-indigo-950/30",
+    gradient: "from-emerald-500/20 via-teal-600/10 to-dark-card/30",
     description: "Production-ready MERN electronic commerce application featuring secure authentication, payment gateway simulation, persistent shopping carts, and dynamic inventory management.",
     highlights: [
       "Rigorous security implementation: bcrypt password hashing and tamper-proof JWT token auth.",

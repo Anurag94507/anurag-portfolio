@@ -69,17 +69,17 @@ export const CustomCursor: React.FC = () => {
     <div className="custom-cursor fixed inset-0 pointer-events-none z-50 overflow-hidden">
       {/* Outer trailing aura */}
       <motion.div
-        className="fixed top-0 left-0 rounded-full border border-neon-cyan/50 pointer-events-none -translate-x-1/2 -translate-y-1/2"
+        className="fixed top-0 left-0 rounded-full border border-neon-cyan/50 pointer-events-none -transtone-x-1/2 -transtone-y-1/2"
         style={{
           x: trailX,
           y: trailY,
           width: isHovered ? 54 : 32,
           height: isHovered ? 54 : 32,
-          backgroundColor: isHovered ? 'rgba(0, 240, 255, 0.08)' : 'rgba(0, 240, 255, 0.03)',
-          borderColor: isHovered ? '#8B5CF6' : '#00F0FF',
+          backgroundColor: isHovered ? 'rgba(255, 122, 69, 0.08)' : 'rgba(255, 122, 69, 0.03)',
+          borderColor: isHovered ? '#E7C79A' : '#FF7A45',
           boxShadow: isHovered
-            ? '0 0 20px rgba(139, 92, 246, 0.4)'
-            : '0 0 10px rgba(0, 240, 255, 0.25)',
+            ? '0 0 20px rgba(240, 162, 75, 0.4)'
+            : '0 0 10px rgba(255, 122, 69, 0.25)',
           transition: 'width 0.2s ease, height 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease',
         }}
         animate={{
@@ -89,7 +89,7 @@ export const CustomCursor: React.FC = () => {
 
       {/* Center pinpoint */}
       <motion.div
-        className="fixed top-0 left-0 w-2 h-2 rounded-full bg-neon-cyan pointer-events-none -translate-x-1/2 -translate-y-1/2 shadow-[0_0_8px_#00F0FF]"
+        className="fixed top-0 left-0 w-2 h-2 rounded-full bg-neon-cyan pointer-events-none -transtone-x-1/2 -transtone-y-1/2 shadow-[0_0_8px_#FF7A45]"
         style={{
           x: cursorX,
           y: cursorY,

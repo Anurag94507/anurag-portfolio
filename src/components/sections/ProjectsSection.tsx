@@ -64,7 +64,7 @@ export const ProjectsSection: React.FC = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
-            className="mt-4 max-w-xl text-slate-400 text-sm sm:text-base leading-relaxed"
+            className="mt-4 max-w-xl text-stone-400 text-sm sm:text-base leading-relaxed"
           >
             Public repositories created, maintained, and deployed by Anurag Mishra across AI, full-stack, and civic infrastructure.
           </motion.p>
@@ -75,7 +75,7 @@ export const ProjectsSection: React.FC = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.3 }}
-            className="mt-8 flex flex-wrap justify-center gap-2 bg-slate-900/40 p-1.5 rounded-full border border-white/5"
+            className="mt-8 flex flex-wrap justify-center gap-2 bg-stone-900/40 p-1.5 rounded-full border border-white/5"
           >
             {categories.map((cat) => (
               <button
@@ -83,8 +83,8 @@ export const ProjectsSection: React.FC = () => {
                 onClick={() => setActiveCategory(cat)}
                 className={`px-4 py-1.5 rounded-full text-xs font-medium transition-all ${
                   activeCategory === cat
-                    ? 'bg-gradient-to-r from-neon-cyan to-indigo-600 text-dark-bg font-semibold shadow-glow-cyan'
-                    : 'text-slate-400 hover:text-white'
+                    ? 'bg-gradient-to-r from-neon-cyan to-neon-amber text-dark-bg font-semibold shadow-glow-cyan'
+                    : 'text-stone-400 hover:text-white'
                 }`}
               >
                 {cat}
@@ -107,7 +107,7 @@ export const ProjectsSection: React.FC = () => {
               <TiltCard className="glass-card rounded-3xl border border-white/10 hover:border-neon-cyan/40 hover:shadow-glow-card transition-all flex flex-col justify-between h-full group">
                 <div>
                   {/* Browser Mockup Window Chrome with Real Website Photo */}
-                  <div className="relative h-52 sm:h-64 w-full rounded-t-3xl overflow-hidden border-b border-white/10 bg-slate-950">
+                  <div className="relative h-52 sm:h-64 w-full rounded-t-3xl overflow-hidden border-b border-white/10 bg-stone-950">
                     {/* The Real Website Photo */}
                     <img
                       src={project.image}
@@ -125,7 +125,7 @@ export const ProjectsSection: React.FC = () => {
                         <span className="w-2.5 h-2.5 rounded-full bg-rose-500/90 inline-block" />
                         <span className="w-2.5 h-2.5 rounded-full bg-amber-500/90 inline-block" />
                         <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/90 inline-block" />
-                        <span className="text-[10px] font-mono text-slate-300 ml-2 truncate max-w-[130px] sm:max-w-[210px]">
+                        <span className="text-[10px] font-mono text-stone-300 ml-2 truncate max-w-[130px] sm:max-w-[210px]">
                           github.com/{project.repoName}
                         </span>
                       </div>
@@ -135,7 +135,7 @@ export const ProjectsSection: React.FC = () => {
                     </div>
 
                     {/* Bottom Bar on image: Language & Live status */}
-                    <div className="absolute bottom-2.5 inset-x-3 flex items-center justify-between text-[11px] font-mono text-slate-200 z-10">
+                    <div className="absolute bottom-2.5 inset-x-3 flex items-center justify-between text-[11px] font-mono text-stone-200 z-10">
                       <div className="flex items-center gap-1.5 bg-dark-bg/85 px-2.5 py-1 rounded-full border border-white/10 backdrop-blur-md">
                         <span className={`w-2 h-2 rounded-full ${getLanguageColor(project.language)}`} />
                         <span>{project.language}</span>
@@ -152,26 +152,26 @@ export const ProjectsSection: React.FC = () => {
                   {/* Card Content */}
                   <div className="p-6 sm:p-7 space-y-4">
                     <div>
-                      <div className="flex items-center gap-2 text-xs font-mono text-slate-400 mb-1">
-                        <GithubIcon className="w-3.5 h-3.5 text-slate-400" />
+                      <div className="flex items-center gap-2 text-xs font-mono text-stone-400 mb-1">
+                        <GithubIcon className="w-3.5 h-3.5 text-stone-400" />
                         <span>{project.repoName}</span>
                       </div>
                       <h3 className="text-xl font-display font-bold text-white group-hover:text-neon-cyan transition-colors">
                         {project.title}
                       </h3>
-                      <p className="text-xs text-slate-400 mt-1 font-mono">
+                      <p className="text-xs text-stone-400 mt-1 font-mono">
                         {project.subtitle}
                       </p>
                     </div>
 
-                    <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                    <p className="text-xs sm:text-sm text-stone-300 leading-relaxed">
                       {project.description}
                     </p>
 
                     {/* Bullet highlights */}
                     <div className="space-y-2 pt-2">
                       {project.highlights.map((item, hIdx) => (
-                        <div key={hIdx} className="flex items-start gap-2 text-xs text-slate-300">
+                        <div key={hIdx} className="flex items-start gap-2 text-xs text-stone-300">
                           <CheckCircle2 className="w-3.5 h-3.5 text-neon-cyan flex-shrink-0 mt-0.5" />
                           <span>{item}</span>
                         </div>
@@ -183,7 +183,7 @@ export const ProjectsSection: React.FC = () => {
                       {project.technologies.map((tech) => (
                         <span
                           key={tech}
-                          className="px-2.5 py-1 rounded-lg bg-slate-900/90 border border-white/5 text-[11px] font-mono text-slate-300"
+                          className="px-2.5 py-1 rounded-lg bg-stone-900/90 border border-white/5 text-[11px] font-mono text-stone-300"
                         >
                           {tech}
                         </span>
@@ -193,14 +193,14 @@ export const ProjectsSection: React.FC = () => {
                 </div>
 
                 {/* Card Actions Footer */}
-                <div className="p-6 sm:p-7 pt-0 flex items-center justify-between border-t border-slate-800/80 mt-4">
+                <div className="p-6 sm:p-7 pt-0 flex items-center justify-between border-t border-stone-800/80 mt-4">
                   <div className="flex items-center gap-2.5">
                     {project.liveUrl && (
                       <a
                         href={project.liveUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-gradient-to-r from-neon-cyan to-indigo-600 text-dark-bg font-semibold text-xs shadow-glow-cyan hover:scale-105 transition-all"
+                        className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-gradient-to-r from-neon-cyan to-neon-amber text-dark-bg font-semibold text-xs shadow-glow-cyan hover:scale-105 transition-all"
                       >
                         <span>Live Demo</span>
                         <ExternalLink className="w-3.5 h-3.5" />
@@ -211,7 +211,7 @@ export const ProjectsSection: React.FC = () => {
                       href={project.githubUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full glass-card border border-white/10 hover:border-neon-cyan/40 text-slate-200 hover:text-white font-medium text-xs transition-all hover:scale-105"
+                      className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full glass-card border border-white/10 hover:border-neon-cyan/40 text-stone-200 hover:text-white font-medium text-xs transition-all hover:scale-105"
                     >
                       <GithubIcon className="w-3.5 h-3.5" />
                       <span>GitHub</span>
@@ -220,7 +220,7 @@ export const ProjectsSection: React.FC = () => {
 
                   {project.metrics && project.metrics[0] && (
                     <div className="text-right">
-                      <span className="text-[10px] uppercase font-mono text-slate-400 block">
+                      <span className="text-[10px] uppercase font-mono text-stone-400 block">
                         {project.metrics[0].label}
                       </span>
                       <span className="text-xs font-mono font-bold text-neon-cyan">
@@ -239,7 +239,7 @@ export const ProjectsSection: React.FC = () => {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="mt-16 p-8 rounded-3xl glass-card border border-neon-cyan/30 text-center relative overflow-hidden bg-gradient-to-r from-slate-900/80 via-slate-900/60 to-slate-900/80"
+          className="mt-16 p-8 rounded-3xl glass-card border border-neon-cyan/30 text-center relative overflow-hidden bg-gradient-to-r from-stone-900/80 via-stone-900/60 to-stone-900/80"
         >
           <div className="relative z-10 flex flex-col sm:flex-row items-center justify-between gap-6 max-w-4xl mx-auto">
             <div className="text-left space-y-1">
@@ -250,7 +250,7 @@ export const ProjectsSection: React.FC = () => {
               <h3 className="text-xl sm:text-2xl font-display font-bold text-white">
                 Explore All Public Repositories on GitHub
               </h3>
-              <p className="text-xs sm:text-sm text-slate-300">
+              <p className="text-xs sm:text-sm text-stone-300">
                 Explore commits, stars, releases, pull requests, and ongoing algorithmic experiments.
               </p>
             </div>
@@ -259,7 +259,7 @@ export const ProjectsSection: React.FC = () => {
               href="https://github.com/Anurag94507?tab=repositories"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-gradient-to-r from-neon-cyan via-indigo-600 to-neon-violet text-dark-bg font-display font-bold text-sm shadow-glow-cyan hover:shadow-[0_0_30px_rgba(0,240,255,0.6)] hover:scale-105 active:scale-95 transition-all flex-shrink-0"
+              className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-gradient-to-r from-neon-cyan via-neon-amber to-neon-violet text-dark-bg font-display font-bold text-sm shadow-glow-cyan hover:shadow-[0_0_30px_rgba(255,122,69,0.6)] hover:scale-105 active:scale-95 transition-all flex-shrink-0"
             >
               <GithubIcon className="w-4 h-4 text-dark-bg" />
               <span>Visit Anurag94507 on GitHub</span>

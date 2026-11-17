@@ -115,7 +115,7 @@ export const ContactSection: React.FC = () => {
         particleCount: 90,
         spread: 70,
         origin: { y: 0.6 },
-        colors: ['#00F5FF', '#8B5CF6', '#3B82F6', '#10B981'],
+        colors: ['#FF7A45', '#E7C79A', '#3B82F6', '#10B981'],
       });
     } catch (err: any) {
       console.warn('FormSubmit network notice:', err);
@@ -159,7 +159,7 @@ export const ContactSection: React.FC = () => {
             initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full glass-card border border-neon-cyan/30 text-xs font-mono text-neon-cyan mb-3 shadow-[0_0_15px_rgba(0,240,255,0.15)]"
+            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full glass-card border border-neon-cyan/30 text-xs font-mono text-neon-cyan mb-3 shadow-[0_0_15px_rgba(255,122,69,0.15)]"
           >
             <Sparkles className="w-3.5 h-3.5" />
             <span>07 // DIRECT INQUIRIES & CONTACT</span>
@@ -170,7 +170,7 @@ export const ContactSection: React.FC = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-slate-900 dark:text-white tracking-tight"
+            className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-stone-900 dark:text-white tracking-tight"
           >
             Connect With Anurag <span className="gradient-text">Directly</span>
           </motion.h2>
@@ -180,7 +180,7 @@ export const ContactSection: React.FC = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
-            className="mt-4 max-w-xl text-slate-600 dark:text-slate-300 text-sm sm:text-base leading-relaxed"
+            className="mt-4 max-w-xl text-stone-600 dark:text-stone-300 text-sm sm:text-base leading-relaxed"
           >
             Send an inquiry or discuss engineering opportunities across DevOps, Full-Stack architectures, and Applied AI research.
           </motion.p>
@@ -198,8 +198,8 @@ export const ContactSection: React.FC = () => {
                 onClick={() => setActiveTab('chat')}
                 className={`flex items-center gap-2 px-5 py-2.5 rounded-xl font-mono text-xs sm:text-sm font-semibold transition-all ${
                   activeTab === 'chat'
-                    ? 'bg-gradient-to-r from-neon-cyan via-indigo-600 to-neon-violet text-dark-bg shadow-glow-cyan'
-                    : 'text-slate-600 dark:text-slate-300 hover:text-white hover:bg-white/5'
+                    ? 'bg-gradient-to-r from-neon-cyan via-neon-amber to-neon-violet text-dark-bg shadow-glow-cyan'
+                    : 'text-stone-600 dark:text-stone-300 hover:text-white hover:bg-white/5'
                 }`}
               >
                 <MessageSquare className="w-4 h-4" />
@@ -210,8 +210,8 @@ export const ContactSection: React.FC = () => {
                 onClick={() => setActiveTab('form')}
                 className={`flex items-center gap-2 px-5 py-2.5 rounded-xl font-mono text-xs sm:text-sm font-semibold transition-all ${
                   activeTab === 'form'
-                    ? 'bg-gradient-to-r from-neon-cyan via-indigo-600 to-neon-violet text-dark-bg shadow-glow-cyan'
-                    : 'text-slate-600 dark:text-slate-300 hover:text-white hover:bg-white/5'
+                    ? 'bg-gradient-to-r from-neon-cyan via-neon-amber to-neon-violet text-dark-bg shadow-glow-cyan'
+                    : 'text-stone-600 dark:text-stone-300 hover:text-white hover:bg-white/5'
                 }`}
               >
                 <FileText className="w-4 h-4" />
@@ -222,7 +222,7 @@ export const ContactSection: React.FC = () => {
             {/* Admin Database Vault Trigger for Anurag */}
             <button
               onClick={() => setIsAdminModalOpen(true)}
-              className="flex items-center gap-1.5 px-4 py-2.5 rounded-2xl bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white text-xs font-mono border border-white/10 transition-colors shadow-sm"
+              className="flex items-center gap-1.5 px-4 py-2.5 rounded-2xl bg-stone-800/80 hover:bg-stone-700 text-stone-300 hover:text-white text-xs font-mono border border-white/10 transition-colors shadow-sm"
               title="Inspect stored inquiries and chat sessions in database"
             >
               <Database className="w-4 h-4 text-neon-cyan" />
@@ -243,12 +243,12 @@ export const ContactSection: React.FC = () => {
             {/* Quick Email Card */}
             <div className="glass-card p-6 rounded-3xl border border-white/10 hover:border-neon-cyan/40 transition-all shadow-[0_4px_20px_rgba(0,0,0,0.1)]">
               <div className="flex items-center justify-between mb-3">
-                <div className="p-3 rounded-2xl bg-neon-cyan/15 text-neon-cyan shadow-[0_0_15px_rgba(0,240,255,0.2)]">
+                <div className="p-3 rounded-2xl bg-neon-cyan/15 text-neon-cyan shadow-[0_0_15px_rgba(255,122,69,0.2)]">
                   <Mail className="w-5 h-5" />
                 </div>
                 <button
                   onClick={copyEmailToClipboard}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-800/90 hover:bg-slate-700 text-[11px] font-mono text-slate-200 hover:text-white transition-colors border border-white/10"
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-stone-800/90 hover:bg-stone-700 text-[11px] font-mono text-stone-200 hover:text-white transition-colors border border-white/10"
                   aria-label="Copy Email Address"
                 >
                   {copiedEmail ? (
@@ -265,10 +265,10 @@ export const ContactSection: React.FC = () => {
                 </button>
               </div>
 
-              <span className="text-[11px] uppercase font-mono text-slate-400">Direct Email</span>
+              <span className="text-[11px] uppercase font-mono text-stone-400">Direct Email</span>
               <a
                 href={`mailto:${personalInfo.contact.email}`}
-                className="block text-base sm:text-lg font-semibold text-slate-900 dark:text-white hover:text-neon-cyan transition-colors truncate mt-0.5"
+                className="block text-base sm:text-lg font-semibold text-stone-900 dark:text-white hover:text-neon-cyan transition-colors truncate mt-0.5"
               >
                 {personalInfo.contact.email}
               </a>
@@ -278,13 +278,13 @@ export const ContactSection: React.FC = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <a
                 href={`tel:${personalInfo.contact.phone}`}
-                className="glass-card p-5 rounded-3xl border border-white/10 hover:border-sky-400/50 transition-all group block shadow-[0_4px_20px_rgba(0,0,0,0.1)]"
+                className="glass-card p-5 rounded-3xl border border-white/10 hover:border-neon-amber/50 transition-all group block shadow-[0_4px_20px_rgba(0,0,0,0.1)]"
               >
-                <div className="p-3 rounded-2xl bg-sky-500/15 text-sky-400 inline-block mb-2 group-hover:scale-110 transition-transform shadow-[0_0_15px_rgba(56,189,248,0.2)]">
+                <div className="p-3 rounded-2xl bg-neon-amber/15 text-neon-amber inline-block mb-2 group-hover:scale-110 transition-transform shadow-[0_0_15px_rgba(56,189,248,0.2)]">
                   <Phone className="w-5 h-5" />
                 </div>
-                <span className="text-[10px] uppercase font-mono text-slate-400 block">Phone Call</span>
-                <span className="text-sm font-semibold text-slate-900 dark:text-white group-hover:text-sky-300 transition-colors">
+                <span className="text-[10px] uppercase font-mono text-stone-400 block">Phone Call</span>
+                <span className="text-sm font-semibold text-stone-900 dark:text-white group-hover:text-neon-amber transition-colors">
                   {personalInfo.contact.phone}
                 </span>
               </a>
@@ -298,8 +298,8 @@ export const ContactSection: React.FC = () => {
                 <div className="p-3 rounded-2xl bg-emerald-500/15 text-emerald-400 inline-block mb-2 group-hover:scale-110 transition-transform shadow-[0_0_15px_rgba(16,185,129,0.2)]">
                   <WhatsAppIcon className="w-5 h-5 text-emerald-400" />
                 </div>
-                <span className="text-[10px] uppercase font-mono text-slate-400 block">WhatsApp Chat</span>
-                <span className="text-sm font-semibold text-slate-900 dark:text-white group-hover:text-emerald-300 transition-colors">
+                <span className="text-[10px] uppercase font-mono text-stone-400 block">WhatsApp Chat</span>
+                <span className="text-sm font-semibold text-stone-900 dark:text-white group-hover:text-emerald-300 transition-colors">
                   +91-7800509636
                 </span>
               </a>
@@ -307,11 +307,11 @@ export const ContactSection: React.FC = () => {
 
             {/* Location Card */}
             <div className="glass-card p-5 rounded-3xl border border-white/10 shadow-[0_4px_20px_rgba(0,0,0,0.1)]">
-              <div className="p-2.5 rounded-2xl bg-slate-800 text-slate-300 inline-block mb-2">
+              <div className="p-2.5 rounded-2xl bg-stone-800 text-stone-300 inline-block mb-2">
                 <MapPin className="w-4 h-4 text-neon-cyan" />
               </div>
-              <span className="text-[10px] uppercase font-mono text-slate-400 block">Location & Timezone</span>
-              <p className="text-xs font-semibold text-slate-900 dark:text-white mt-0.5">
+              <span className="text-[10px] uppercase font-mono text-stone-400 block">Location & Timezone</span>
+              <p className="text-xs font-semibold text-stone-900 dark:text-white mt-0.5">
                 {personalInfo.contact.location} &bull; IST (UTC+05:30)
               </p>
             </div>
@@ -322,7 +322,7 @@ export const ContactSection: React.FC = () => {
                 href="https://wa.me/917800509636?text=Hi%20Anurag,%20I%20saw%20your%20portfolio"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center gap-1.5 p-3 rounded-2xl glass-card border border-white/10 hover:border-emerald-500/40 hover:text-white text-slate-700 dark:text-slate-300 transition-all shadow-md"
+                className="flex items-center justify-center gap-1.5 p-3 rounded-2xl glass-card border border-white/10 hover:border-emerald-500/40 hover:text-white text-stone-700 dark:text-stone-300 transition-all shadow-md"
               >
                 <WhatsAppIcon className="w-4 h-4 text-emerald-400" />
                 <span className="text-xs font-semibold">WhatsApp</span>
@@ -332,7 +332,7 @@ export const ContactSection: React.FC = () => {
                 href={personalInfo.contact.github}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center gap-1.5 p-3 rounded-2xl glass-card border border-white/10 hover:border-neon-cyan/40 hover:text-white text-slate-700 dark:text-slate-300 transition-all shadow-md"
+                className="flex items-center justify-center gap-1.5 p-3 rounded-2xl glass-card border border-white/10 hover:border-neon-cyan/40 hover:text-white text-stone-700 dark:text-stone-300 transition-all shadow-md"
               >
                 <GithubIcon className="w-4 h-4 text-neon-cyan" />
                 <span className="text-xs font-semibold">GitHub</span>
@@ -342,7 +342,7 @@ export const ContactSection: React.FC = () => {
                 href={personalInfo.contact.linkedin}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center gap-1.5 p-3 rounded-2xl glass-card border border-white/10 hover:border-neon-violet/40 hover:text-white text-slate-700 dark:text-slate-300 transition-all shadow-md"
+                className="flex items-center justify-center gap-1.5 p-3 rounded-2xl glass-card border border-white/10 hover:border-neon-violet/40 hover:text-white text-stone-700 dark:text-stone-300 transition-all shadow-md"
               >
                 <LinkedinIcon className="w-4 h-4 text-neon-violet" />
                 <span className="text-xs font-semibold">LinkedIn</span>
@@ -361,7 +361,7 @@ export const ContactSection: React.FC = () => {
             {activeTab === 'chat' ? (
               <RealLifeChat />
             ) : (
-              <div className="glass-card rounded-3xl p-6 sm:p-8 border border-white/10 relative overflow-hidden bg-slate-950/80">
+              <div className="glass-card rounded-3xl p-6 sm:p-8 border border-white/10 relative overflow-hidden bg-stone-950/80">
                 <div className="flex items-center gap-2 text-xs font-mono text-neon-cyan mb-6">
                   <Terminal className="w-4 h-4" />
                   <span>DIRECT DISPATCH // SAVES TO INBOX & DATABASE</span>
@@ -372,10 +372,10 @@ export const ContactSection: React.FC = () => {
                     <div className="w-16 h-16 rounded-full bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400">
                       <Check className="w-8 h-8" />
                     </div>
-                    <h3 className="text-2xl font-display font-bold text-slate-900 dark:text-white">
+                    <h3 className="text-2xl font-display font-bold text-stone-900 dark:text-white">
                       Inquiry Dispatched!
                     </h3>
-                    <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 max-w-md leading-relaxed">
+                    <p className="text-xs sm:text-sm text-stone-600 dark:text-stone-300 max-w-md leading-relaxed">
                       {submitStatus.message}
                     </p>
 
@@ -410,7 +410,7 @@ export const ContactSection: React.FC = () => {
                   <form onSubmit={handleSubmit} className="space-y-4" noValidate>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-xs font-mono uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
+                        <label className="block text-xs font-mono uppercase tracking-wider text-stone-700 dark:text-stone-300 mb-1.5">
                           Your Name <span className="text-neon-cyan">*</span>
                         </label>
                         <input
@@ -421,10 +421,10 @@ export const ContactSection: React.FC = () => {
                             if (errors.name) setErrors({ ...errors, name: '' });
                           }}
                           placeholder="e.g. Alex Mercer"
-                          className={`w-full px-4 py-3 rounded-xl bg-slate-900/80 border text-sm text-slate-900 dark:text-slate-100 placeholder-slate-500 focus:outline-none transition-all ${
+                          className={`w-full px-4 py-3 rounded-xl bg-stone-900/80 border text-sm text-stone-900 dark:text-stone-100 placeholder-stone-500 focus:outline-none transition-all ${
                             errors.name
                               ? 'border-rose-500 focus:border-rose-500'
-                              : 'border-slate-800 focus:border-neon-cyan focus:shadow-[0_0_15px_rgba(0,240,255,0.2)]'
+                              : 'border-stone-800 focus:border-neon-cyan focus:shadow-[0_0_15px_rgba(255,122,69,0.2)]'
                           }`}
                         />
                         {errors.name && (
@@ -433,7 +433,7 @@ export const ContactSection: React.FC = () => {
                       </div>
 
                       <div>
-                        <label className="block text-xs font-mono uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
+                        <label className="block text-xs font-mono uppercase tracking-wider text-stone-700 dark:text-stone-300 mb-1.5">
                           Email Address <span className="text-neon-cyan">*</span>
                         </label>
                         <input
@@ -444,10 +444,10 @@ export const ContactSection: React.FC = () => {
                             if (errors.email) setErrors({ ...errors, email: '' });
                           }}
                           placeholder="you@company.com"
-                          className={`w-full px-4 py-3 rounded-xl bg-slate-900/80 border text-sm text-slate-900 dark:text-slate-100 placeholder-slate-500 focus:outline-none transition-all ${
+                          className={`w-full px-4 py-3 rounded-xl bg-stone-900/80 border text-sm text-stone-900 dark:text-stone-100 placeholder-stone-500 focus:outline-none transition-all ${
                             errors.email
                               ? 'border-rose-500 focus:border-rose-500'
-                              : 'border-slate-800 focus:border-neon-cyan focus:shadow-[0_0_15px_rgba(0,240,255,0.2)]'
+                              : 'border-stone-800 focus:border-neon-cyan focus:shadow-[0_0_15px_rgba(255,122,69,0.2)]'
                           }`}
                         />
                         {errors.email && (
@@ -457,7 +457,7 @@ export const ContactSection: React.FC = () => {
                     </div>
 
                     <div>
-                      <label className="block text-xs font-mono uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
+                      <label className="block text-xs font-mono uppercase tracking-wider text-stone-700 dark:text-stone-300 mb-1.5">
                         Subject
                       </label>
                       <input
@@ -465,12 +465,12 @@ export const ContactSection: React.FC = () => {
                         value={formData.subject}
                         onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
                         placeholder="e.g. Full-Stack / DevOps Engineering Role"
-                        className="w-full px-4 py-3 rounded-xl bg-slate-900/80 border border-slate-800 text-sm text-slate-900 dark:text-slate-100 placeholder-slate-500 focus:outline-none focus:border-neon-cyan focus:shadow-[0_0_15px_rgba(0,240,255,0.2)] transition-all"
+                        className="w-full px-4 py-3 rounded-xl bg-stone-900/80 border border-stone-800 text-sm text-stone-900 dark:text-stone-100 placeholder-stone-500 focus:outline-none focus:border-neon-cyan focus:shadow-[0_0_15px_rgba(255,122,69,0.2)] transition-all"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-xs font-mono uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
+                      <label className="block text-xs font-mono uppercase tracking-wider text-stone-700 dark:text-stone-300 mb-1.5">
                         Message <span className="text-neon-cyan">*</span>
                       </label>
                       <textarea
@@ -481,10 +481,10 @@ export const ContactSection: React.FC = () => {
                           if (errors.message) setErrors({ ...errors, message: '' });
                         }}
                         placeholder="Brief details regarding your team, role opening, or project requirements..."
-                        className={`w-full px-4 py-3 rounded-xl bg-slate-900/80 border text-sm text-slate-900 dark:text-slate-100 placeholder-slate-500 focus:outline-none transition-all resize-none ${
+                        className={`w-full px-4 py-3 rounded-xl bg-stone-900/80 border text-sm text-stone-900 dark:text-stone-100 placeholder-stone-500 focus:outline-none transition-all resize-none ${
                           errors.message
                             ? 'border-rose-500 focus:border-rose-500'
-                            : 'border-slate-800 focus:border-neon-cyan focus:shadow-[0_0_15px_rgba(0,240,255,0.2)]'
+                            : 'border-stone-800 focus:border-neon-cyan focus:shadow-[0_0_15px_rgba(255,122,69,0.2)]'
                         }`}
                       />
                       {errors.message && (
@@ -495,7 +495,7 @@ export const ContactSection: React.FC = () => {
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="w-full py-4 rounded-xl bg-gradient-to-r from-neon-cyan via-indigo-600 to-neon-violet text-dark-bg font-display font-bold text-sm shadow-glow-cyan hover:shadow-[0_0_35px_rgba(0,240,255,0.6)] hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+                      className="w-full py-4 rounded-xl bg-gradient-to-r from-neon-cyan via-neon-amber to-neon-violet text-dark-bg font-display font-bold text-sm shadow-glow-cyan hover:shadow-[0_0_35px_rgba(255,122,69,0.6)] hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
                     >
                       {isSubmitting ? (
                         <div className="w-5 h-5 border-2 border-dark-bg border-t-transparent rounded-full animate-spin" />
@@ -507,7 +507,7 @@ export const ContactSection: React.FC = () => {
                       )}
                     </button>
 
-                    <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] font-mono text-slate-500 dark:text-slate-400">
+                    <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] font-mono text-stone-500 dark:text-stone-400">
                       <span>Direct Backup Channels:</span>
                       <div className="flex items-center gap-3">
                         <a

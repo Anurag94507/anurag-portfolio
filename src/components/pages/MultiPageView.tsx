@@ -67,7 +67,7 @@ export const MultiPageView: React.FC<MultiPageViewProps> = ({
           PAGE TOP BAR: BREADCRUMBS & VIEW MODE BADGE
          ======================================================== */}
       <div className="flex flex-wrap items-center justify-between gap-4 mb-8 pb-4 border-b border-white/10">
-        <div className="flex items-center gap-2 text-xs font-mono text-slate-400">
+        <div className="flex items-center gap-2 text-xs font-mono text-stone-400">
           <button
             onClick={() => onNavigate('home')}
             className="hover:text-neon-cyan transition-colors flex items-center gap-1"
@@ -89,7 +89,7 @@ export const MultiPageView: React.FC<MultiPageViewProps> = ({
 
           <button
             onClick={onSwitchToSinglePage}
-            className="text-xs font-mono text-slate-400 hover:text-white px-3 py-1 rounded-full border border-white/10 hover:border-white/30 transition-colors"
+            className="text-xs font-mono text-stone-400 hover:text-white px-3 py-1 rounded-full border border-white/10 hover:border-white/30 transition-colors"
             title="Switch to continuous one-page scroll"
           >
             Switch to 📜 Continuous Scroll
@@ -168,11 +168,11 @@ export const MultiPageView: React.FC<MultiPageViewProps> = ({
         {prevPage ? (
           <button
             onClick={() => onNavigate(prevPage.id)}
-            className="flex items-center gap-3 px-5 py-3 rounded-2xl glass-card border border-white/10 hover:border-neon-cyan/40 text-slate-300 hover:text-white transition-all w-full sm:w-auto"
+            className="flex items-center gap-3 px-5 py-3 rounded-2xl glass-card border border-white/10 hover:border-neon-cyan/40 text-stone-300 hover:text-white transition-all w-full sm:w-auto"
           >
             <ArrowLeft className="w-4 h-4 text-neon-cyan" />
             <div className="text-left">
-              <span className="text-[10px] font-mono uppercase text-slate-500 block">Previous Webpage</span>
+              <span className="text-[10px] font-mono uppercase text-stone-500 block">Previous Webpage</span>
               <span className="text-sm font-semibold">{prevPage.title}</span>
             </div>
           </button>
@@ -189,7 +189,7 @@ export const MultiPageView: React.FC<MultiPageViewProps> = ({
               className={`w-8 h-8 rounded-full text-xs font-mono font-bold flex items-center justify-center transition-all ${
                 currentPage === page.id
                   ? 'bg-neon-cyan text-dark-bg shadow-glow-cyan scale-110'
-                  : 'bg-slate-900 text-slate-400 hover:text-white hover:bg-slate-800 border border-white/10'
+                  : 'bg-stone-900 text-stone-400 hover:text-white hover:bg-stone-800 border border-white/10'
               }`}
               title={page.title}
             >
@@ -201,7 +201,7 @@ export const MultiPageView: React.FC<MultiPageViewProps> = ({
         {nextPage ? (
           <button
             onClick={() => onNavigate(nextPage.id)}
-            className="flex items-center justify-between sm:justify-start gap-3 px-5 py-3 rounded-2xl bg-gradient-to-r from-slate-900 to-indigo-950/80 border border-neon-cyan/30 hover:border-neon-cyan/60 text-slate-200 hover:text-white transition-all w-full sm:w-auto shadow-md"
+            className="flex items-center justify-between sm:justify-start gap-3 px-5 py-3 rounded-2xl bg-gradient-to-r from-stone-900 to-dark-card/80 border border-neon-cyan/30 hover:border-neon-cyan/60 text-stone-200 hover:text-white transition-all w-full sm:w-auto shadow-md"
           >
             <div className="text-left sm:text-right">
               <span className="text-[10px] font-mono uppercase text-neon-cyan block">Next Webpage</span>

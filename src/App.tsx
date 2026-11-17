@@ -106,7 +106,7 @@ export const App: React.FC = () => {
   }, []);
 
   return (
-    <div className="relative min-h-screen bg-[#F8FAFD] text-slate-900 dark:bg-[#060A17] dark:text-slate-100 transition-colors duration-300">
+    <div className="relative min-h-screen bg-[#F6F1E8] text-stone-900 dark:bg-[#0B0A09] dark:text-stone-100 transition-colors duration-300">
       {/* Film Grain Texture Overlay */}
       <div className="fixed inset-0 pointer-events-none z-30 bg-grain opacity-30 dark:opacity-40" aria-hidden="true" />
 

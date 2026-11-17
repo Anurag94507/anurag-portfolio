@@ -28,7 +28,7 @@ export const ResearchSection: React.FC = () => {
   return (
     <section id="research" className="relative py-24 px-4 overflow-hidden">
       {/* Background glow effects */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-indigo-900/10 rounded-full blur-[140px] pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -transtone-x-1/2 -transtone-y-1/2 w-[600px] h-[600px] bg-dark-card/10 rounded-full blur-[140px] pointer-events-none" />
 
       <div className="max-w-6xl mx-auto">
         {/* Section Header */}
@@ -58,7 +58,7 @@ export const ResearchSection: React.FC = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
-            className="mt-4 max-w-2xl text-slate-400 text-sm sm:text-base leading-relaxed"
+            className="mt-4 max-w-2xl text-stone-400 text-sm sm:text-base leading-relaxed"
           >
             Peer-reviewed research presented at international conference proceedings, solving real-world edge AI and multi-agent computational bottlenecks.
           </motion.p>
@@ -70,7 +70,7 @@ export const ResearchSection: React.FC = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.7 }}
-          className="glass-card rounded-3xl p-6 sm:p-10 border border-neon-violet/30 shadow-[0_0_50px_rgba(139,92,246,0.12)] relative overflow-hidden"
+          className="glass-card rounded-3xl p-6 sm:p-10 border border-neon-violet/30 shadow-[0_0_50px_rgba(240,162,75,0.12)] relative overflow-hidden"
         >
           {/* Subtle decorative background gradient */}
           <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-neon-violet/15 via-neon-cyan/5 to-transparent rounded-bl-full pointer-events-none" />
@@ -86,7 +86,7 @@ export const ResearchSection: React.FC = () => {
                 IEEE-Format Research Paper
               </span>
             </div>
-            <span className="text-xs font-mono text-slate-400">
+            <span className="text-xs font-mono text-stone-400">
               {researchData.venue}
             </span>
           </div>
@@ -96,17 +96,17 @@ export const ResearchSection: React.FC = () => {
             "{researchData.title}"
           </h3>
 
-          <p className="text-sm font-mono text-slate-400 mt-2">
-            Presented at: <span className="text-slate-200">{researchData.conference}</span>
+          <p className="text-sm font-mono text-stone-400 mt-2">
+            Presented at: <span className="text-stone-200">{researchData.conference}</span>
           </p>
 
           {/* Abstract */}
-          <div className="mt-6 p-5 rounded-2xl bg-slate-900/70 border border-white/5 space-y-2">
+          <div className="mt-6 p-5 rounded-2xl bg-stone-900/70 border border-white/5 space-y-2">
             <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-neon-cyan">
               <BookOpen className="w-4 h-4" />
               <span>Executive Abstract</span>
             </div>
-            <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+            <p className="text-xs sm:text-sm text-stone-300 leading-relaxed">
               {researchData.abstract}
             </p>
           </div>
@@ -118,7 +118,7 @@ export const ResearchSection: React.FC = () => {
                 href={researchData.companionUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-neon-cyan to-indigo-600 text-dark-bg font-semibold text-xs sm:text-sm shadow-glow-cyan hover:scale-105 transition-all"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-neon-cyan to-neon-amber text-dark-bg font-semibold text-xs sm:text-sm shadow-glow-cyan hover:scale-105 transition-all"
               >
                 <span>Explore Live HerdIntel Platform</span>
                 <ExternalLink className="w-4 h-4" />
@@ -127,7 +127,7 @@ export const ResearchSection: React.FC = () => {
 
             <button
               onClick={() => setShowGaps(!showGaps)}
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full glass-card border border-white/10 hover:border-neon-violet/50 text-slate-200 text-xs sm:text-sm font-medium transition-all"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full glass-card border border-white/10 hover:border-neon-violet/50 text-stone-200 text-xs sm:text-sm font-medium transition-all"
             >
               <AlertTriangle className="w-4 h-4 text-amber-400" />
               <span>{showGaps ? "Hide 10 Deployment Gaps" : "View 10 Critical Gaps Identified"}</span>
@@ -142,7 +142,7 @@ export const ResearchSection: React.FC = () => {
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: 'auto' }}
                 exit={{ opacity: 0, height: 0 }}
-                className="mt-6 pt-6 border-t border-slate-800 overflow-hidden"
+                className="mt-6 pt-6 border-t border-stone-800 overflow-hidden"
               >
                 <div className="mb-3 flex items-center gap-2 text-xs font-mono uppercase text-amber-300">
                   <FileCheck className="w-4 h-4" />
@@ -152,12 +152,12 @@ export const ResearchSection: React.FC = () => {
                   {researchData.gapsIdentified.map((gap, gIdx) => (
                     <div
                       key={gIdx}
-                      className="p-3.5 rounded-xl bg-slate-900/60 border border-slate-800 flex items-start gap-3"
+                      className="p-3.5 rounded-xl bg-stone-900/60 border border-stone-800 flex items-start gap-3"
                     >
                       <span className="font-mono text-xs font-bold text-neon-cyan mt-0.5">
                         GAP-{String(gIdx + 1).padStart(2, '0')}
                       </span>
-                      <span className="text-xs text-slate-300 leading-snug">
+                      <span className="text-xs text-stone-300 leading-snug">
                         {gap}
                       </span>
                     </div>
@@ -168,8 +168,8 @@ export const ResearchSection: React.FC = () => {
           </AnimatePresence>
 
           {/* 4 Architectural Innovation Pillars */}
-          <div className="mt-10 pt-8 border-t border-slate-800">
-            <h4 className="text-xs uppercase font-mono tracking-widest text-slate-400 mb-6">
+          <div className="mt-10 pt-8 border-t border-stone-800">
+            <h4 className="text-xs uppercase font-mono tracking-widest text-stone-400 mb-6">
               Proposed Edge-Cloud Hybrid Pillars
             </h4>
 
@@ -177,15 +177,15 @@ export const ResearchSection: React.FC = () => {
               {researchData.proposedArchitecture.map((pillar) => (
                 <div
                   key={pillar.name}
-                  className="p-5 rounded-2xl bg-slate-900/50 border border-white/5 hover:border-neon-cyan/30 hover:bg-slate-900/80 transition-all group"
+                  className="p-5 rounded-2xl bg-stone-900/50 border border-white/5 hover:border-neon-cyan/30 hover:bg-stone-900/80 transition-all group"
                 >
-                  <div className="w-10 h-10 rounded-xl bg-slate-800 border border-white/10 flex items-center justify-center text-neon-cyan group-hover:text-neon-violet group-hover:scale-110 transition-all mb-3">
+                  <div className="w-10 h-10 rounded-xl bg-stone-800 border border-white/10 flex items-center justify-center text-neon-cyan group-hover:text-neon-violet group-hover:scale-110 transition-all mb-3">
                     {pillarIcons[pillar.icon]}
                   </div>
                   <h5 className="text-sm font-semibold text-white font-display mb-1.5">
                     {pillar.name}
                   </h5>
-                  <p className="text-xs text-slate-400 leading-relaxed">
+                  <p className="text-xs text-stone-400 leading-relaxed">
                     {pillar.description}
                   </p>
                 </div>
@@ -195,11 +195,11 @@ export const ResearchSection: React.FC = () => {
 
           {/* Research Keywords */}
           <div className="mt-8 flex flex-wrap items-center gap-2">
-            <span className="text-xs font-mono text-slate-400 mr-2">Keywords:</span>
+            <span className="text-xs font-mono text-stone-400 mr-2">Keywords:</span>
             {researchData.keywords.map((kw) => (
               <span
                 key={kw}
-                className="px-2.5 py-1 rounded-md bg-slate-800/80 border border-white/5 text-[11px] font-mono text-slate-300"
+                className="px-2.5 py-1 rounded-md bg-stone-800/80 border border-white/5 text-[11px] font-mono text-stone-300"
               >
                 #{kw}
               </span>

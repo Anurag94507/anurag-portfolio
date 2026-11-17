@@ -147,7 +147,7 @@ export const PortfolioCompanion: React.FC<PortfolioCompanionProps> = ({
         particleCount: 70,
         spread: 60,
         origin: { y: 0.7 },
-        colors: ['#00F0FF', '#8B5CF6', '#10B981'],
+        colors: ['#FF7A45', '#E7C79A', '#10B981'],
       });
       setEyeState('happy');
       setIsWaving(true);
@@ -191,39 +191,39 @@ export const PortfolioCompanion: React.FC<PortfolioCompanionProps> = ({
       title="Click me to wave!"
     >
       {/* Holographic Pulse Aura */}
-      <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-cyan-400/30 via-indigo-500/20 to-purple-500/30 blur-md animate-pulse" />
+      <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-neon-cyan/30 via-neon-cyan/20 to-neon-cyan/30 blur-md animate-pulse" />
 
       {/* Futuristic Floating Bot SVG */}
       <svg
         viewBox="0 0 100 100"
-        className={`w-full h-full relative z-10 drop-shadow-[0_0_12px_rgba(0,240,255,0.6)] ${
+        className={`w-full h-full relative z-10 drop-shadow-[0_0_12px_rgba(255,122,69,0.6)] ${
           isWaving ? 'animate-bounce' : 'animate-float'
         }`}
       >
         <defs>
           <linearGradient id="bodyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#0B132B" />
-            <stop offset="50%" stopColor="#1C2541" />
-            <stop offset="100%" stopColor="#3A506B" />
+            <stop offset="0%" stopColor="#141210" />
+            <stop offset="50%" stopColor="#241C16" />
+            <stop offset="100%" stopColor="#6B5545" />
           </linearGradient>
           <linearGradient id="faceGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#050814" />
-            <stop offset="100%" stopColor="#0F172A" />
+            <stop offset="0%" stopColor="#0B0A09" />
+            <stop offset="100%" stopColor="#1B1714" />
           </linearGradient>
           <linearGradient id="cyanNeon" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#00F0FF" />
+            <stop offset="0%" stopColor="#FF7A45" />
             <stop offset="100%" stopColor="#3B82F6" />
           </linearGradient>
           <linearGradient id="violetNeon" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#A855F7" />
+            <stop offset="0%" stopColor="#F0A24B" />
             <stop offset="100%" stopColor="#EC4899" />
           </linearGradient>
         </defs>
 
         {/* Antenna */}
-        <line x1="50" y1="22" x2="50" y2="12" stroke="#00F0FF" strokeWidth="3" strokeLinecap="round" />
-        <circle cx="50" cy="10" r="4.5" fill="#00F0FF" className="animate-ping" style={{ transformOrigin: '50px 10px' }} />
-        <circle cx="50" cy="10" r="4" fill="#00F0FF" />
+        <line x1="50" y1="22" x2="50" y2="12" stroke="#FF7A45" strokeWidth="3" strokeLinecap="round" />
+        <circle cx="50" cy="10" r="4.5" fill="#FF7A45" className="animate-ping" style={{ transformOrigin: '50px 10px' }} />
+        <circle cx="50" cy="10" r="4" fill="#FF7A45" />
 
         {/* Floating Ring / Orbit */}
         <ellipse
@@ -259,33 +259,33 @@ export const PortfolioCompanion: React.FC<PortfolioCompanionProps> = ({
           height="28"
           rx="10"
           fill="url(#faceGrad)"
-          stroke="rgba(0, 240, 255, 0.4)"
+          stroke="rgba(255, 122, 69, 0.4)"
           strokeWidth="1.2"
         />
 
         {/* Dynamic Eyes */}
         {eyeState === 'blink' ? (
           <>
-            <line x1="36" y1="44" x2="44" y2="44" stroke="#00F0FF" strokeWidth="2.5" strokeLinecap="round" />
-            <line x1="56" y1="44" x2="64" y2="44" stroke="#00F0FF" strokeWidth="2.5" strokeLinecap="round" />
+            <line x1="36" y1="44" x2="44" y2="44" stroke="#FF7A45" strokeWidth="2.5" strokeLinecap="round" />
+            <line x1="56" y1="44" x2="64" y2="44" stroke="#FF7A45" strokeWidth="2.5" strokeLinecap="round" />
           </>
         ) : eyeState === 'wink' ? (
           <>
-            <circle cx="40" cy="44" r="4" fill="#00F0FF" />
-            <path d="M 56 44 Q 60 48 64 44" stroke="#00F0FF" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+            <circle cx="40" cy="44" r="4" fill="#FF7A45" />
+            <path d="M 56 44 Q 60 48 64 44" stroke="#FF7A45" strokeWidth="2.5" fill="none" strokeLinecap="round" />
           </>
         ) : eyeState === 'happy' ? (
           <>
-            <path d="M 36 45 Q 40 39 44 45" stroke="#00F0FF" strokeWidth="2.5" fill="none" strokeLinecap="round" />
-            <path d="M 56 45 Q 60 39 64 45" stroke="#00F0FF" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+            <path d="M 36 45 Q 40 39 44 45" stroke="#FF7A45" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+            <path d="M 56 45 Q 60 39 64 45" stroke="#FF7A45" strokeWidth="2.5" fill="none" strokeLinecap="round" />
           </>
         ) : (
           <>
-            <circle cx="40" cy="44" r="4.2" fill="#00F0FF">
+            <circle cx="40" cy="44" r="4.2" fill="#FF7A45">
               <animate attributeName="r" values="4.2;4.6;4.2" dur="3s" repeatCount="indefinite" />
             </circle>
             <circle cx="41.5" cy="42.5" r="1.3" fill="#FFFFFF" />
-            <circle cx="60" cy="44" r="4.2" fill="#00F0FF">
+            <circle cx="60" cy="44" r="4.2" fill="#FF7A45">
               <animate attributeName="r" values="4.2;4.6;4.2" dur="3s" repeatCount="indefinite" />
             </circle>
             <circle cx="61.5" cy="42.5" r="1.3" fill="#FFFFFF" />
@@ -295,15 +295,15 @@ export const PortfolioCompanion: React.FC<PortfolioCompanionProps> = ({
         {/* Cute Smile / Voice Visualizer */}
         <path
           d={isWaving ? "M 44 52 Q 50 56 56 52" : "M 45 52 Q 50 54 55 52"}
-          stroke="#00F0FF"
+          stroke="#FF7A45"
           strokeWidth="1.8"
           fill="none"
           strokeLinecap="round"
         />
 
         {/* Headphones / Ears */}
-        <rect x="17" y="36" width="6" height="16" rx="3" fill="#8B5CF6" />
-        <rect x="77" y="36" width="6" height="16" rx="3" fill="#8B5CF6" />
+        <rect x="17" y="36" width="6" height="16" rx="3" fill="#E7C79A" />
+        <rect x="77" y="36" width="6" height="16" rx="3" fill="#E7C79A" />
 
         {/* Chest Core */}
         <circle cx="50" cy="74" r="3.5" fill="#10B981" className="animate-pulse" />
@@ -314,7 +314,7 @@ export const PortfolioCompanion: React.FC<PortfolioCompanionProps> = ({
   // If embedded directly into a section or hero card
   if (variant === 'embedded') {
     return (
-      <div className="w-full glass-card p-6 rounded-3xl border border-neon-cyan/30 relative overflow-hidden shadow-[0_0_40px_rgba(0,240,255,0.12)]">
+      <div className="w-full glass-card p-6 rounded-3xl border border-neon-cyan/30 relative overflow-hidden shadow-[0_0_40px_rgba(255,122,69,0.12)]">
         {/* Glow corner */}
         <div className="absolute top-0 right-0 w-48 h-48 bg-neon-cyan/10 rounded-full blur-3xl pointer-events-none" />
 
@@ -323,7 +323,7 @@ export const PortfolioCompanion: React.FC<PortfolioCompanionProps> = ({
             {renderRobotAvatar('w-14 h-14')}
             <div>
               <div className="flex items-center gap-2">
-                <h3 className="font-display font-bold text-base text-slate-900 dark:text-white">
+                <h3 className="font-display font-bold text-base text-stone-900 dark:text-white">
                   Aura // Anurag's Digital Companion
                 </h3>
                 <span className="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 text-[10px] font-mono border border-emerald-500/30 flex items-center gap-1">
@@ -331,7 +331,7 @@ export const PortfolioCompanion: React.FC<PortfolioCompanionProps> = ({
                   ONLINE
                 </span>
               </div>
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-stone-400">
                 Interactive AI co-pilot guiding you through Anurag's work
               </p>
             </div>
@@ -343,7 +343,7 @@ export const PortfolioCompanion: React.FC<PortfolioCompanionProps> = ({
               className={`p-2 rounded-xl text-xs font-mono transition-colors flex items-center gap-1.5 border ${
                 voiceEnabled
                   ? 'bg-neon-cyan/20 text-neon-cyan border-neon-cyan/50'
-                  : 'bg-slate-800 text-slate-400 border-white/10 hover:text-white'
+                  : 'bg-stone-800 text-stone-400 border-white/10 hover:text-white'
               }`}
               title={voiceEnabled ? 'Mute Aura Voice' : 'Enable Aura Voice Narration'}
             >
@@ -354,7 +354,7 @@ export const PortfolioCompanion: React.FC<PortfolioCompanionProps> = ({
         </div>
 
         {/* Message bubble */}
-        <div className="p-4 rounded-2xl glass-panel border border-white/10 text-slate-800 dark:text-slate-200 text-sm leading-relaxed mb-4">
+        <div className="p-4 rounded-2xl glass-panel border border-white/10 text-stone-800 dark:text-stone-200 text-sm leading-relaxed mb-4">
           <p>{currentNode.text}</p>
           {currentNode.actionText && currentNode.actionPage && (
             <button
@@ -373,7 +373,7 @@ export const PortfolioCompanion: React.FC<PortfolioCompanionProps> = ({
             <button
               key={idx}
               onClick={() => handleSelectOption(opt.nextId)}
-              className="px-3.5 py-2 rounded-xl bg-slate-800/80 hover:bg-slate-700/80 border border-white/10 hover:border-neon-cyan/40 text-xs font-mono text-slate-200 hover:text-white transition-all transform hover:-translate-y-0.5"
+              className="px-3.5 py-2 rounded-xl bg-stone-800/80 hover:bg-stone-700/80 border border-white/10 hover:border-neon-cyan/40 text-xs font-mono text-stone-200 hover:text-white transition-all transform hover:-transtone-y-0.5"
             >
               {opt.label}
             </button>
@@ -385,7 +385,9 @@ export const PortfolioCompanion: React.FC<PortfolioCompanionProps> = ({
 
   // Floating Corner Variant
   return (
-    <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end pointer-events-auto">
+    // Hidden on phones: the chat assistant and embedded guide already cover this,
+    // and a fixed bubble would sit on the chat composer's send button.
+    <div className="hidden sm:flex fixed bottom-6 right-6 z-50 flex-col items-end pointer-events-auto">
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -396,7 +398,7 @@ export const PortfolioCompanion: React.FC<PortfolioCompanionProps> = ({
             className="w-[90vw] sm:w-96 glass-panel rounded-3xl p-5 border border-neon-cyan/30 shadow-[0_15px_40px_rgba(0,0,0,0.4)] backdrop-blur-2xl mb-3 relative overflow-hidden"
           >
             {/* Top decorative gradient bar */}
-            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-neon-cyan via-indigo-500 to-neon-violet" />
+            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-neon-cyan via-neon-cyan to-neon-violet" />
 
             {/* Header */}
             <div className="flex items-center justify-between pb-3 mb-3 border-b border-white/10">
@@ -406,7 +408,7 @@ export const PortfolioCompanion: React.FC<PortfolioCompanionProps> = ({
                   <h4 className="font-display font-bold text-sm text-white flex items-center gap-1.5">
                     Aura <span className="text-[10px] font-mono text-neon-cyan font-normal">// Companion</span>
                   </h4>
-                  <p className="text-[10px] text-slate-400">Anurag's Interactive Guide</p>
+                  <p className="text-[10px] text-stone-400">Anurag's Interactive Guide</p>
                 </div>
               </div>
 
@@ -416,7 +418,7 @@ export const PortfolioCompanion: React.FC<PortfolioCompanionProps> = ({
                   className={`p-1.5 rounded-lg border text-xs transition-colors ${
                     voiceEnabled
                       ? 'bg-neon-cyan/20 text-neon-cyan border-neon-cyan/50'
-                      : 'bg-slate-800/80 text-slate-400 border-white/10'
+                      : 'bg-stone-800/80 text-stone-400 border-white/10'
                   }`}
                   title={voiceEnabled ? 'Mute speech' : 'Enable speech'}
                 >
@@ -424,7 +426,7 @@ export const PortfolioCompanion: React.FC<PortfolioCompanionProps> = ({
                 </button>
                 <button
                   onClick={() => setIsOpen(false)}
-                  className="p-1.5 rounded-lg bg-slate-800/80 hover:bg-slate-800 text-slate-400 hover:text-white border border-white/10 transition-colors"
+                  className="p-1.5 rounded-lg bg-stone-800/80 hover:bg-stone-800 text-stone-400 hover:text-white border border-white/10 transition-colors"
                   aria-label="Close Companion"
                 >
                   <X className="w-3.5 h-3.5" />
@@ -433,7 +435,7 @@ export const PortfolioCompanion: React.FC<PortfolioCompanionProps> = ({
             </div>
 
             {/* Bubble */}
-            <div className="p-3.5 rounded-2xl glass-card border border-white/10 text-xs text-slate-800 dark:text-slate-200 leading-relaxed mb-3">
+            <div className="p-3.5 rounded-2xl glass-card border border-white/10 text-xs text-stone-800 dark:text-stone-200 leading-relaxed mb-3">
               <p>{currentNode.text}</p>
               {currentNode.actionText && currentNode.actionPage && (
                 <button
@@ -455,7 +457,7 @@ export const PortfolioCompanion: React.FC<PortfolioCompanionProps> = ({
                 <button
                   key={idx}
                   onClick={() => handleSelectOption(opt.nextId)}
-                  className="w-full text-left px-3 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 border border-white/10 hover:border-neon-cyan/40 text-xs font-mono text-slate-200 hover:text-neon-cyan transition-colors"
+                  className="w-full text-left px-3 py-2 rounded-xl bg-stone-900 hover:bg-stone-800 border border-white/10 hover:border-neon-cyan/40 text-xs font-mono text-stone-200 hover:text-neon-cyan transition-colors"
                 >
                   {opt.label}
                 </button>
@@ -470,10 +472,10 @@ export const PortfolioCompanion: React.FC<PortfolioCompanionProps> = ({
         whileHover={{ scale: 1.08 }}
         whileTap={{ scale: 0.95 }}
         onClick={() => setIsOpen(!isOpen)}
-        className="relative group p-1.5 rounded-full bg-gradient-to-tr from-neon-cyan via-indigo-600 to-neon-violet shadow-[0_0_25px_rgba(0,240,255,0.5)] focus:outline-none"
+        className="relative group p-1.5 rounded-full bg-gradient-to-tr from-neon-cyan via-neon-amber to-neon-violet shadow-[0_0_25px_rgba(255,122,69,0.5)] focus:outline-none"
         aria-label="Toggle Aura AI Companion"
       >
-        <div className="w-13 h-13 rounded-full bg-slate-950 p-1 flex items-center justify-center relative">
+        <div className="w-13 h-13 rounded-full bg-stone-950 p-1 flex items-center justify-center relative">
           {renderRobotAvatar('w-12 h-12')}
 
           {/* Badge indicator */}
