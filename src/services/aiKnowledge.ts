@@ -60,7 +60,7 @@ export const detectLanguage = (text: string): SupportedLanguage => {
 const normalize = (value: string) =>
   ` ${value
     .toLowerCase()
-    .replace(/[^\p{L}\p{N}\s+#.]/gu, ' ')
+    .replace(/[^\p{L}\p{M}\p{N}\s+#.]/gu, ' ')
     .replace(/\s+/g, ' ')
     .trim()} `;
 
@@ -71,7 +71,7 @@ const STOPWORDS = new Set([
   'want', 'know', 'any', 'all', 'more', 'give', 'show', 'have', 'has', 'had', 'it', 'its',
   'that', 'this', 'there', 'as', 'be', 'from', 'so', 'if', 'us', 'also', 'very', 'much',
   'good', 'like', 'hi', 'hey', 'hello', 'sir', 'maam', 'there', 'some', 'just', 'get',
-  'explain', 'info', 'information', 'details', 'detail', 'looking', 'lookingfor',
+  'explain', 'info', 'information', 'details', 'detail', 'looking', 'lookingfor', 'engine',
 ]);
 
 const tokenize = (value: string) =>
@@ -86,9 +86,9 @@ const bulletList = (items: string[], max = 4) =>
 
 const replies = {
   greeting: {
-    en: `Hey! I'm Anurag's portfolio assistant, trained on his verified work history. I can walk you through the projects, the C-DAC observability work, the ICNACT 2026 paper, his stack, or how to reach him. What do you want to dig into?`,
-    hi: `नमस्ते! मैं अनुराग का पोर्टफोलियो सहायक हूँ, और मेरे पास उनके सत्यापित काम की पूरी जानकारी है। प्रोजेक्ट्स, C-DAC का observability काम, ICNACT 2026 पेपर, टेक स्टैक या संपर्क — किस बारे में जानना चाहेंगे?`,
-    hinglish: `Hey! Main Anurag ka portfolio assistant hoon aur mere paas unke verified kaam ki poori detail hai. Projects, C-DAC ka observability work, ICNACT 2026 paper, tech stack ya contact — kya jaanna chahenge?`,
+    en: `Hey! I'm Anurag's portfolio assistant, trained on his verified work history. I can walk you through the projects, the C-DAC real-time vision work, the ICNACT 2026 paper, his stack, or how to reach him. What do you want to dig into?`,
+    hi: `नमस्ते! मैं अनुराग का पोर्टफोलियो सहायक हूँ, और मेरे पास उनके सत्यापित काम की पूरी जानकारी है। प्रोजेक्ट्स, C-DAC का real-time vision काम, ICNACT 2026 पेपर, टेक स्टैक या संपर्क — किस बारे में जानना चाहेंगे?`,
+    hinglish: `Hey! Main Anurag ka portfolio assistant hoon aur mere paas unke verified kaam ki poori detail hai. Projects, C-DAC ka real-time vision work, ICNACT 2026 paper, tech stack ya contact — kya jaanna chahenge?`,
   },
   thanks: {
     en: `Anytime! If it's useful, the fastest way to reach Anurag directly is ${personalInfo.contact.email} or WhatsApp on ${personalInfo.contact.phone}. Anything else you'd like to check?`,
@@ -228,6 +228,20 @@ const TECH_NOTES: Record<string, string> = {
     'SHAP explains model output per feature. In the ICNACT 2026 paper it makes veterinary alerts auditable instead of a black box.',
   'federated learning':
     'Federated learning trains models across farms without centralising proprietary herd data — one of the architecture pillars proposed in the ICNACT 2026 paper.',
+  deepstream:
+    'DeepStream is NVIDIA\'s GPU-accelerated video analytics SDK. At C-DAC I used it to run multi-channel RTSP inference on Jetson AGX.',
+  gstreamer:
+    'GStreamer is the multimedia pipeline framework underneath DeepStream. At C-DAC I built pipelines that ingest and synchronise live camera streams.',
+  cuda:
+    'CUDA is NVIDIA\'s GPU compute platform. On Jetson AGX I worked with CUDA-accelerated inference so models run on-device at low latency.',
+  jetson:
+    'Jetson AGX is NVIDIA\'s edge AI computer. At C-DAC it hosts the production computer vision pipelines — inference happens at the camera, not in a datacentre.',
+  pyqt5:
+    'PyQt5 is the Python desktop GUI toolkit. I built a streamer application with it to display and control DeepStream feeds in one operator window.',
+  rtsp:
+    'RTSP is the streaming protocol used by IP cameras. The C-DAC pipelines consume live RTSP feeds and hand them to DeepStream for inference.',
+  'next.js':
+    'Next.js is the React framework used for the IIIT Naya Raipur platform, shipped end to end with Node.js and MongoDB Atlas in a six-week window.',
   linux:
     'Linux is the base environment for server work — the monitoring stack at C-DAC and the deployment tooling around these projects all ran on Linux hosts.',
   'ci cd':
@@ -246,6 +260,245 @@ const TECH_NOTES: Record<string, string> = {
 
 const findTechNote = (text: string) =>
   Object.keys(TECH_NOTES).find((key) => hasPhrase(normalize(text), key));
+
+// -------------------------------------------------------------------------
+// Vocabulary expansion: synonyms, abbreviations and typo tolerance
+// -------------------------------------------------------------------------
+
+const HINDI_SYNONYMS: Record<string, string[]> = {
+  'प्रोजेक्ट': ['project'],
+  'परियोजना': ['project'],
+  'अनुभव': ['experience'],
+  'पेपर': ['research'],
+  'रिसर्च': ['research'],
+  'शिक्षा': ['education'],
+  'पढ़ाई': ['education'],
+  'संपर्क': ['contact'],
+  'उपलब्ध': ['available'],
+  'कौन': ['which'],
+  'कौनसा': ['which'],
+  'सबसे': ['best'],
+  'अच्छा': ['best'],
+  'बताइए': ['tell'],
+  'बताओ': ['tell'],
+  'कंपनी': ['company'],
+  'नौकरी': ['job'],
+  'वेतन': ['salary'],
+  'टीम': ['team'],
+  'भाषा': ['language'],
+};
+
+const SYNONYM_GROUPS: string[][] = [
+  ['vision', 'image', 'opencv', 'visual', 'camera', 'cameras', 'video'],
+  ['ai', 'ml', 'machine', 'learning', 'artificial', 'intelligence'],
+  ['edge', 'embedded', 'ondevice', 'jetson', 'inference'],
+  ['js', 'javascript'],
+  ['ts', 'typescript'],
+  ['db', 'database', 'databases', 'datastore'],
+  ['frontend', 'ui', 'ux', 'interface'],
+  ['backend', 'api', 'server', 'servers'],
+  ['devops', 'sre', 'platform', 'infra', 'infrastructure', 'reliability'],
+  ['paper', 'publication', 'research', 'ieee', 'conference'],
+  ['certs', 'certificate', 'certificates', 'certifications', 'credentials'],
+  ['job', 'role', 'roles', 'position', 'opening', 'vacancy'],
+  ['resume', 'cv', 'biodata'],
+  ['salary', 'ctc', 'compensation', 'pay', 'package', 'stipend'],
+  ['project', 'projects', 'work', 'built', 'build', 'shipped', 'apps'],
+  ['internship', 'intern', 'internships', 'experience', 'worked', 'employment'],
+  ['cow', 'cows', 'cattle', 'dairy', 'herd', 'livestock'],
+  ['relocate', 'relocation', 'remote', 'onsite', 'hybrid', 'shift'],
+  ['gpu', 'cuda', 'nvidia'],
+  ['rtsp', 'stream', 'streams', 'feed', 'feeds'],
+  ['chatbot', 'bot', 'assistant'],
+  ['weakness', 'weaknesses', 'improve', 'growth', 'cons'],
+  ['achievement', 'achievements', 'award', 'awards', 'recognition', 'honors'],
+  ['dsa', 'algorithms', 'algorithm', 'datastructures'],
+];
+
+const editDistance = (a: string, b: string) => {
+  const m = a.length;
+  const n = b.length;
+  if (Math.abs(m - n) > 2) return 3;
+  const dp: number[][] = Array.from({ length: m + 1 }, (_, i) => [i, ...Array(n).fill(0)]);
+  for (let j = 0; j <= n; j += 1) dp[0][j] = j;
+  for (let i = 1; i <= m; i += 1) {
+    for (let j = 1; j <= n; j += 1) {
+      dp[i][j] = Math.min(
+        dp[i - 1][j] + 1,
+        dp[i][j - 1] + 1,
+        dp[i - 1][j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1)
+      );
+    }
+  }
+  return dp[m][n];
+};
+
+const DATA_VOCAB = new Set<string>();
+const addToVocab = (value: string) =>
+  value
+    .toLowerCase()
+    .split(/[^a-z0-9.+#]+/)
+    .forEach((word) => {
+      if (word.length > 2) DATA_VOCAB.add(word);
+    });
+
+skillCategories.forEach((category) => category.skills.forEach((skill) => addToVocab(skill.name)));
+projects.forEach((project) => {
+  addToVocab(project.title);
+  addToVocab(project.language);
+  project.technologies.forEach(addToVocab);
+});
+experiences.forEach((entry) => {
+  addToVocab(entry.role);
+  addToVocab(entry.organization);
+  entry.skills.forEach(addToVocab);
+});
+Object.keys(TECH_NOTES).forEach(addToVocab);
+SYNONYM_GROUPS.flat().forEach(addToVocab);
+
+/** Tokenize, then add synonyms and correct obvious typos against the data vocabulary. */
+const expandTokens = (value: string) => {
+  const base = tokenize(value);
+  const expanded = new Set(base);
+
+  for (const token of base) {
+    for (const group of SYNONYM_GROUPS) {
+      if (group.includes(token)) {
+        group.forEach((word) => {
+          if (word.length > 1 && !STOPWORDS.has(word)) expanded.add(word);
+        });
+      }
+    }
+
+    const hindi = HINDI_SYNONYMS[token];
+    if (hindi) {
+      hindi.forEach((word) => {
+        expanded.add(word);
+        DATA_VOCAB.add(word);
+      });
+    }
+
+    if (!DATA_VOCAB.has(token) && token.length >= 5) {
+      const budget = token.length >= 8 ? 2 : 1;
+      for (const candidate of DATA_VOCAB) {
+        if (Math.abs(candidate.length - token.length) <= budget && editDistance(token, candidate) <= budget) {
+          expanded.add(candidate);
+          break;
+        }
+      }
+    }
+  }
+
+  return expanded;
+};
+
+// -------------------------------------------------------------------------
+// Retrieval layer: every verified fact as a small searchable chunk, so a
+// question that matches no intent still gets a grounded answer instead of
+// a canned refusal.
+// -------------------------------------------------------------------------
+
+interface KnowledgeChunk {
+  id: string;
+  title: string;
+  text: string;
+  keywords: Set<string>;
+}
+
+const buildChunk = (id: string, title: string, text: string): KnowledgeChunk => ({
+  id,
+  title,
+  text,
+  keywords: new Set(tokenize(`${title} ${text}`)),
+});
+
+const KNOWLEDGE_CHUNKS: KnowledgeChunk[] = [
+  ...experiences.map((entry) =>
+    buildChunk(
+      `exp:${entry.id}`,
+      `${entry.role} at ${entry.organization}`,
+      `${entry.period}, ${entry.location}. ${entry.description.join(' ')} Skills applied: ${entry.skills.join(', ')}.`
+    )
+  ),
+  ...projects.map((project) =>
+    buildChunk(
+      `proj:${project.id}`,
+      `${shortLabel(project)} (${project.category})`,
+      `${project.description} Stack: ${project.technologies.join(', ')}. ${project.highlights.join(' ')}`
+    )
+  ),
+  buildChunk('research:abstract', 'ICNACT 2026 paper', `${researchData.title}. ${researchData.abstract}`),
+  buildChunk('research:gaps', 'ICNACT 2026 deployment gaps', researchData.gapsIdentified.join(' ')),
+  buildChunk(
+    'research:architecture',
+    'Proposed edge-cloud architecture',
+    researchData.proposedArchitecture.map((pillar) => `${pillar.name} — ${pillar.description}`).join(' ')
+  ),
+  buildChunk(
+    'education',
+    'Education and CGPA',
+    `${personalInfo.education.degree} in ${personalInfo.education.field} at ${personalInfo.education.institution}, ${personalInfo.education.period}. CGPA ${[personalInfo.education.cgpaYear1, personalInfo.education.cgpaYear2, personalInfo.education.cgpaYear3].filter(Boolean).join(', ')}. Coursework: ${personalInfo.education.coursework.join(', ')}.`
+  ),
+  ...skillCategories.map((category) =>
+    buildChunk(
+      `skills:${category.category}`,
+      `${category.category} skills`,
+      `${category.description} ${category.skills.map((skill) => `${skill.name} (${skill.level})`).join(', ')}.`
+    )
+  ),
+  ...certifications.map((cert) =>
+    buildChunk(`cert:${cert.id}`, cert.title, `${cert.issuer} (${cert.date}). ${cert.description}`)
+  ),
+  ...personalInfo.aboutText.map((paragraph, index) => buildChunk(`about:${index}`, 'Background', paragraph)),
+];
+
+const retrieveKnowledge = (query: string, limit = 3) => {
+  const queryTokens = [...expandTokens(query)].filter((token) => token.length > 2);
+  if (!queryTokens.length) return [] as KnowledgeChunk[];
+
+  const seen = new Set<string>();
+  return KNOWLEDGE_CHUNKS.map((chunk) => {
+    const titleTokens = tokenize(chunk.title);
+    let score = 0;
+    for (const token of queryTokens) {
+      if (chunk.keywords.has(token)) score += 2;
+      else if (token.length > 4 && [...chunk.keywords].some((word) => word.length > 4 && editDistance(token, word) <= 1)) {
+        score += 1;
+      }
+    }
+    score += queryTokens.filter((token) => titleTokens.includes(token)).length * 2;
+    return { chunk, score };
+  })
+    .filter((entry) => entry.score >= 4)
+    .sort((a, b) => b.score - a.score)
+    .filter(({ chunk }) => (seen.has(chunk.title) ? false : (seen.add(chunk.title), true)))
+    .slice(0, limit)
+    .map((entry) => entry.chunk);
+};
+
+// -------------------------------------------------------------------------
+// Human touch: deterministic conversational openers so long answers read like
+// a colleague explaining, not a database dumping rows.
+// -------------------------------------------------------------------------
+
+const hashString = (value: string) => {
+  let hash = 0;
+  for (let i = 0; i < value.length; i += 1) hash = (hash * 31 + value.charCodeAt(i)) | 0;
+  return Math.abs(hash);
+};
+
+const OPENERS: Record<AnswerLang, string[]> = {
+  en: ['Sure — happy to.', 'Good question.', "Here's what the record shows.", 'Happy to dig into this.', 'Absolutely.'],
+  hi: ['ज़रूर, बताता हूँ।', 'अच्छा सवाल है।', 'यह रही जानकारी।'],
+  hinglish: ['Sure, bata deta hoon.', 'Good question hai.', 'Ye dekho —'],
+};
+
+const humanize = (topic: string, text: string, input: string, lang: AnswerLang) => {
+  const skip = new Set(['greeting', 'thanks', 'bye', 'smalltalk', 'contact_capture']);
+  if (skip.has(topic) || text.length < 220) return text;
+  const options = OPENERS[lang];
+  return `${options[hashString(input + topic) % options.length]}\n\n${text}`;
+};
 
 // -------------------------------------------------------------------------
 // Intent scoring
@@ -278,8 +531,9 @@ const INTENTS: Intent[] = [
     id: 'education',
     groups: [
       ['education', 'degree', 'college', 'university', 'btech', 'b.tech', 'academic', 'cgpa', 'semester'],
-      ['student', 'studying', 'coursework', 'graduate', 'graduation'],
+      ['student', 'studying', 'study', 'studies', 'studied', 'coursework', 'graduate', 'graduation'],
     ],
+    phrases: ['where does he study', 'where did he study', 'which college', 'what is his education'],
   },
   {
     id: 'research',
@@ -295,6 +549,7 @@ const INTENTS: Intent[] = [
       ['experience', 'worked', 'work', 'internship', 'intern', 'employment', 'career', 'company'],
       ['cdac', 'c-dac', 'iiit', 'cdo', 'ayodhya', 'thiruvananthapuram', 'raipur'],
     ],
+    phrases: ['his experience', 'work experience', 'professional experience', 'experience kya', 'anubhav'],
   },
   {
     id: 'skills',
@@ -332,6 +587,10 @@ const INTENTS: Intent[] = [
   {
     id: 'location',
     groups: [['location', 'located', 'city', 'where', 'based', 'relocate', 'remote', 'onsite', 'hybrid']],
+    phrases: [
+      'work remote', 'remote work', 'work from home', 'willing to relocate', 'open to relocate',
+      'on site', 'work onsite', 'hybrid role', 'where is he based',
+    ],
   },
   {
     id: 'why',
@@ -382,7 +641,7 @@ const INTENTS: Intent[] = [
       ['best', 'strongest', 'favourite', 'favorite', 'proudest', 'impressive', 'flagship'],
       ['project', 'projects', 'work', 'built'],
     ],
-    phrases: ['best project', 'strongest project', 'most impressive'],
+    phrases: ['best project', 'strongest project', 'most impressive', 'konsa best', 'kaunsa best', 'sabse best', 'best kaunsa'],
   },
   {
     id: 'philosophy',
@@ -398,6 +657,69 @@ const INTENTS: Intent[] = [
       ['start', 'join', 'onboarding', 'immediate', 'notice', 'joining', 'relocate'],
     ],
     phrases: ['when can you start', 'when can he start', 'notice period'],
+  },
+  {
+    id: 'smalltalk',
+    groups: [['bot', 'chatbot', 'robot', 'human', 'assistant', 'chatgpt', 'gpt', 'real']],
+    phrases: ['who are you', 'are you human', 'are you real', 'are you ai', 'are you a bot', 'how are you', 'what are you'],
+  },
+  {
+    id: 'weakness',
+    groups: [['weakness', 'weaknesses', 'improve', 'improving', 'improvement', 'growth', 'cons', 'limitation', 'limitations']],
+    phrases: ['biggest weakness', 'areas to improve', 'what is he not good at', 'where can he improve'],
+  },
+  {
+    id: 'experience_level',
+    groups: [['fresher', 'junior', 'senior', 'years', 'months', 'level', 'duration']],
+    phrases: ['how many years', 'how long has he', 'years of experience', 'is he a fresher', 'how much experience'],
+  },
+  {
+    id: 'compare',
+    groups: [['compare', 'comparison', 'versus', 'vs', 'difference', 'differences', 'better']],
+    phrases: ['compare', 'vs', 'versus', 'difference between'],
+  },
+  {
+    id: 'achievements',
+    groups: [['achievement', 'achievements', 'award', 'awards', 'recognition', 'honors', 'honours', 'accomplishment', 'accomplishments', 'presented']],
+  },
+  {
+    id: 'summary',
+    groups: [['summary', 'summarize', 'summarise', 'tldr', 'pitch', 'short']],
+    phrases: [
+      'in one line', 'in a nutshell', 'elevator pitch', 'quick summary', 'sum him up',
+      'summary of his resume', 'resume summary', 'brief summary', 'summarize his resume',
+    ],
+  },
+  {
+    id: 'hobbies',
+    groups: [
+      ['hobbies', 'hobby', 'interests', 'fun', 'outside', 'personal', 'freetime'],
+      ['football', 'cricket', 'sport', 'sports', 'movie', 'movies', 'music', 'song', 'songs', 'food', 'game', 'games', 'travel', 'traveling', 'netflix'],
+    ],
+    phrases: [
+      'hobbies', 'free time', 'outside work', 'for fun', 'football team', 'favourite team',
+      'favorite team', 'favourite movie', 'favourite food', 'cricket team',
+    ],
+  },
+  {
+    id: 'spoken_languages',
+    groups: [['speak', 'speaks', 'spoken', 'fluent', 'fluency']],
+    phrases: ['does he speak', 'which languages', 'spoken language', 'hindi aata', 'english aata'],
+  },
+  {
+    id: 'work_auth',
+    groups: [['visa', 'sponsorship', 'permit', 'authorization', 'authorisation', 'citizenship']],
+    phrases: ['work visa', 'need sponsorship', 'work permit', 'authorized to work', 'eligible to work'],
+  },
+  {
+    id: 'portfolio_tech',
+    groups: [['website', 'site', 'animation', 'animations']],
+    phrases: ['this website', 'this site built', 'this portfolio built', 'how was this built', 'what is this built with'],
+  },
+  {
+    id: 'project_by_tech',
+    groups: [['which', 'what', 'where', 'project', 'projects', 'use', 'used', 'uses']],
+    phrases: ['which projects use', 'what projects use', 'which project uses', 'where did he use', 'which of his projects', 'projects with'],
   },
   {
     id: 'greeting',
@@ -485,6 +807,114 @@ const findProject = (normalized: string, tokens: Set<string>) => {
   return best.score >= 4 ? best.project : undefined;
 };
 
+const GENERIC_PROJECT_QUERY_WORDS = new Set([
+  'which', 'what', 'where', 'project', 'projects', 'apps', 'applications', 'work', 'use', 'uses',
+  'used', 'using', 'built', 'build', 'with', 'involve', 'involves', 'his', 'did', 'made', 'stack',
+]);
+
+/** "which projects use mongodb" → the projects that actually list MongoDB. */
+const projectsUsingTech = (input: string) => {
+  if (!/(which|what)\s+(projects?|apps?|applications?|work)\b/i.test(input)) return undefined;
+  if (!/\b(use|uses|used|using|built|with|involve|involves)\b/i.test(input)) return undefined;
+
+  const queryWords = [...expandTokens(input)].filter(
+    (token) => token.length >= 3 && !GENERIC_PROJECT_QUERY_WORDS.has(token)
+  );
+  if (!queryWords.length) return undefined;
+
+  const matchedTech = new Set<string>();
+  const matched = projects.filter((project) =>
+    project.technologies.some((tech) =>
+      queryWords.some((token) => {
+        if (tech.toLowerCase().includes(token)) {
+          matchedTech.add(tech);
+          return true;
+        }
+        return false;
+      })
+    )
+  );
+
+  return matched.length ? { tech: [...matchedTech].slice(0, 3).join(', '), projects: matched } : undefined;
+};
+
+/** Every project whose title, repo or stack is named in the question. */
+const findNamedProjects = (input: string) => {
+  const queryTokens = expandTokens(input);
+  const seen = new Set<string>();
+  const found: ProjectItem[] = [];
+
+  for (const project of projects) {
+    const haystack = normalize(`${project.title} ${project.repoName} ${shortLabel(project)}`);
+    const hit = [...queryTokens].some(
+      (token) => token.length > 3 && !STOPWORDS.has(token) && hasPhrase(haystack, token)
+    );
+    if (hit && !seen.has(project.id)) {
+      seen.add(project.id);
+      found.push(project);
+    }
+  }
+
+  return found;
+};
+
+/** Resolve a technology to the closest skill entry, tolerating "nextjs" / "nodejs" style input. */
+const findNamedSkill = (input: string) => {
+  const normalizedInput = normalize(input);
+  const queryTokens = expandTokens(input);
+  const compactInput = input.toLowerCase().replace(/[^a-z0-9]/g, '');
+  let best: { name: string; category: string; score: number } | undefined;
+
+  for (const category of skillCategories) {
+    for (const skill of category.skills) {
+      const plain = skill.name
+        .toLowerCase()
+        .replace(/\(.*?\)/g, ' ')
+        .replace(/[^a-z0-9+#. ]+/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+      if (!plain) continue;
+
+      let score = 0;
+      if (hasPhrase(normalizedInput, plain)) score += 4;
+      plain
+        .split(' ')
+        .filter((word) => word.length > 2 && !STOPWORDS.has(word))
+        .forEach((word) => {
+          if (queryTokens.has(word)) score += 2;
+        });
+
+      const compactName = plain.replace(/[^a-z0-9]/g, '');
+      if (compactName.length > 4 && compactInput.includes(compactName)) score += 2;
+
+      if (score > (best?.score ?? 0)) best = { name: skill.name, category: category.category, score };
+    }
+  }
+
+  return best && best.score >= 2 ? best : undefined;
+};
+
+const CERT_ALIASES: Record<string, string[]> = {
+  'aws-forage': ['aws', 'amazon', 'solutions architecture'],
+  'bcg-forage': ['bcg', 'boston consulting'],
+  'siemens-forage': ['siemens'],
+  'codealpha-cert': ['codealpha', 'code alpha'],
+  'olympiad-cert': ['olympiad'],
+  'iiit-cert': ['iiit certificate', 'research internship certificate'],
+  'cdo-cert': ['cdo certificate', 'leadership certificate', 'participation certificate'],
+  'icnact-cert': ['icnact certificate', 'conference certificate'],
+};
+
+const findNamedCertification = (input: string) => {
+  const normalizedInput = normalize(input);
+  for (const [id, aliases] of Object.entries(CERT_ALIASES)) {
+    if (aliases.some((alias) => hasPhrase(normalizedInput, alias))) {
+      return certifications.find((cert) => cert.id === id);
+    }
+  }
+  return undefined;
+};
+
 const CERT_LIST = certifications
   .map((cert) => `• ${cert.title} — ${cert.issuer} (${cert.date})`)
   .join('\n');
@@ -503,6 +933,16 @@ const ROLE_TRACKS: { id: string; label: string; words: string[]; evidence: strin
       'Real-time Prometheus + Grafana observability at C-DAC: custom metric exporters, alert rules and threshold notifications on production services.',
       'CI/CD pipelines, Linux server work and Vercel deployments across the project set.',
       'Designed alerting that surfaces runtime anomalies before service degradation, and built the dashboards operators actually watch.',
+    ],
+  },
+  {
+    id: 'edge',
+    label: 'Edge AI / Computer Vision',
+    words: ['edge', 'vision', 'computer', 'deepstream', 'gstreamer', 'jetson', 'cuda', 'rtsp', 'embedded', 'opencv', 'inference'],
+    evidence: [
+      'Real-time multi-channel computer vision on NVIDIA Jetson AGX at C-DAC: DeepStream + GStreamer ingesting live RTSP streams.',
+      'CUDA-accelerated on-device inference, plus a PyQt5 control surface for operators watching multiple feeds.',
+      'Edge-cloud hybrid architecture research — temporal graph transformers, multimodal fusion and federated learning, presented at ICNACT 2026.',
     ],
   },
   {
@@ -532,7 +972,7 @@ const ROLE_TRACKS: { id: string; label: string; words: string[]; evidence: strin
     evidence: [
       'Co-authored and presented an IEEE-format paper at ICNACT 2026 (VIT Bhopal) auditing an existing multi-agent AI system.',
       'Identified 10 concrete deployment gaps and proposed edge-cloud temporal graph transformers with SHAP explainability.',
-      'Built HerdIntel-AI, the live web platform that operationalises that research.',
+      'Built HerdIntel, the live web platform that operationalises that research.',
     ],
   },
 ];
@@ -656,6 +1096,142 @@ const challengeAnswer = (lang: AnswerLang) => [
   }),
 ].join('\n\n');
 
+const achievementsAnswer = (lang: AnswerLang) =>
+  [
+    pick(lang, {
+      en: `Recognition on record:`,
+      hi: `दर्ज उपलब्धियाँ:`,
+      hinglish: `Recognition jo record par hai:`,
+    }),
+    certifications.map((cert) => `• ${cert.title} — ${cert.issuer} (${cert.date})`).join('\n'),
+    pick(lang, {
+      en: `The headline is ICNACT 2026: he co-authored an IEEE-format paper, presented it at VIT Bhopal and defended the architecture in front of the conference.`,
+      hi: `मुख्य उपलब्धि ICNACT 2026 है — IEEE प्रारूप का पेपर, VIT भोपाल में प्रस्तुति।`,
+      hinglish: `Headline ICNACT 2026 hai — IEEE-format paper, VIT Bhopal mein presentation.`,
+    }),
+  ].join('\n\n');
+
+const weaknessAnswer = (lang: AnswerLang) =>
+  [
+    pick(lang, {
+      en: `Honest answer, from what the portfolio actually documents:`,
+      hi: `सीधा जवाब, पोर्टफोलियो में जो दर्ज है उसी आधार पर:`,
+      hinglish: `Seedha jawab, portfolio mein jo documented hai uske basis par:`,
+    }),
+    `• He is still a student — B.Tech IT finishes July 2027, so full-time joining has to line up with that.`,
+    `• PyTorch and TensorFlow are listed as exposure, not deep production depth. His strongest ML work is scikit-learn, NumPy, pandas plus the research architecture.`,
+    `• No long tenure claim: the record shows three internships and shipped products, not years of industry seniority.`,
+    pick(lang, {
+      en: `What he does about it is visible: real production exposure at C-DAC, a conference paper at IIIT Naya Raipur, and shipped systems instead of tutorials.`,
+      hi: `इस पर उनका काम दिखता है — C-DAC में प्रोडक्शन अनुभव, IIIT का पेपर और असली शिप किए सिस्टम।`,
+      hinglish: `Ispe unka kaam dikhta hai — C-DAC production kaam, IIIT ka paper, aur shipped systems.`,
+    }),
+  ].join('\n\n');
+
+const experienceLevelAnswer = (lang: AnswerLang) =>
+  [
+    pick(lang, {
+      en: `About a year of hands-on engineering across three engagements, on top of shipped products:`,
+      hi: `तीन इंटर्नशिप में लगभग एक साल का प्रैक्टिकल काम, उसके अलावा शिप किए प्रोडक्ट्स:`,
+      hinglish: `Teen internships mein lagbhag ek saal ka hands-on kaam, uske alawa shipped products:`,
+    }),
+    `• CDO Ayodhya — Team Manager (CDO Intern), Apr–Jun 2025\n• IIIT Naya Raipur — AI Research Intern, May–Jul 2026\n• C-DAC Thiruvananthapuram — Software Trainee (WBL), Aug 2026–Feb 2027 (current)`,
+    pick(lang, {
+      en: `He graduates in July 2027, so for full-time roles he is early-career — but the work on record is production work: live camera pipelines, deployed government inventory software, and a conference paper.`,
+      hi: `वे जुलाई 2027 में ग्रेजुएट होंगे, इसलिए फुल-टाइम के लिए early-career हैं — लेकिन काम प्रोडक्शन लेवल का है।`,
+      hinglish: `Wo July 2027 mein graduate honge, toh full-time ke liye early-career hain — par record par kaam production level ka hai.`,
+    }),
+  ].join('\n\n');
+
+const summaryAnswer = (lang: AnswerLang) =>
+  [
+    pick(lang, {
+      en: `Short version: Anurag Mishra, ${personalInfo.titles.slice(0, 3).join(' · ')}.`,
+      hi: `संक्षेप में: अनुराग मिश्रा, ${personalInfo.titles.slice(0, 3).join(' · ')}।`,
+      hinglish: `Short mein: Anurag Mishra, ${personalInfo.titles.slice(0, 3).join(' · ')}.`,
+    }),
+    `• Full-stack: TypeScript/React/Next.js and Node/Express/MongoDB platforms shipped end to end, including an SHG inventory system deployed for the Ayodhya district administration.`,
+    `• Edge AI: real-time multi-camera computer vision on NVIDIA Jetson AGX at C-DAC — DeepStream, GStreamer, RTSP and CUDA inference, with Grafana/Prometheus observability.`,
+    `• Research: co-authored and presented an IEEE-format paper at ICNACT 2026, auditing an existing multi-agent AI system and proposing an explainable edge-cloud architecture.`,
+    `Available: ${personalInfo.availability}. Direct: ${personalInfo.contact.email}.`,
+  ].join('\n\n');
+
+const smalltalkAnswer = (lang: AnswerLang) =>
+  [
+    pick(lang, {
+      en: `Fair question. I'm a scripted assistant built into this portfolio — not a general chatbot and not an LLM behind an API.`,
+      hi: `अच्छा सवाल। मैं इस पोर्टफोलियो में बना एक स्क्रिप्टेड असिस्टेंट हूँ, कोई सामान्य चैटबॉट नहीं।`,
+      hinglish: `Fair question. Main is portfolio mein bana ek scripted assistant hoon — general chatbot ya LLM nahi.`,
+    }),
+    pick(lang, {
+      en: `Every answer is assembled from Anurag's own verified data — resume, projects, research, certifications. That is why I can be specific about his work, and why I say "not documented" instead of inventing something.`,
+      hi: `हर जवाब अनुराग के सत्यापित डेटा से बनता है — रेज़्युमे, प्रोजेक्ट्स, रिसर्च, सर्टिफिकेट्स।`,
+      hinglish: `Har jawab Anurag ke verified data se banta hai — resume, projects, research, certifications.`,
+    }),
+    pick(lang, {
+      en: `So: ask me about the Jetson vision pipeline, the ICNACT paper, the SHG system, his stack or availability, and I'll answer precisely.`,
+      hi: `Jetson vision pipeline, ICNACT पेपर, SHG सिस्टम, स्टैक या उपलब्धता — कुछ भी पूछें।`,
+      hinglish: `Jetson vision pipeline, ICNACT paper, SHG system, stack ya availability — kuch bhi poochho.`,
+    }),
+  ].join('\n\n');
+
+const hobbiesAnswer = (lang: AnswerLang) =>
+  [
+    pick(lang, {
+      en: `That isn't documented anywhere in the portfolio, so I'd rather not invent a hobby list for him.`,
+      hi: `यह पोर्टफोलियो में कहीं दर्ज नहीं है, इसलिए मैं अनुमान नहीं लगाऊँगा।`,
+      hinglish: `Ye portfolio mein kahin documented nahi hai, toh guess nahi karunga.`,
+    }),
+    pick(lang, {
+      en: `What the record does show is where his time goes: production engineering at C-DAC, applied AI research, and side projects like this portfolio.`,
+      hi: `रिकॉर्ड से पता चलता है कि समय कहाँ जाता है — C-DAC में प्रोडक्शन काम, रिसर्च और प्रोजेक्ट्स।`,
+      hinglish: `Record se pata chalta hai time kahan jaata hai — C-DAC production kaam, research aur projects.`,
+    }),
+    `Ask him directly if it matters for a team fit conversation: ${personalInfo.contact.email}.`,
+  ].join('\n\n');
+
+const spokenLanguagesAnswer = (lang: AnswerLang) =>
+  [
+    pick(lang, {
+      en: `Spoken-language fluency isn't listed on the resume, so I won't claim a level for him.`,
+      hi: `रेज़्युमे में बोली जाने वाली भाषाओं का स्तर नहीं लिखा है, इसलिए मैं दावा नहीं करूँगा।`,
+      hinglish: `Resume mein spoken language fluency listed nahi hai, toh claim nahi karunga.`,
+    }),
+    `• His written work and resume are in English.\n• This assistant handles English, Hindi and Hinglish.\n• For anything client-facing, confirm directly: ${personalInfo.contact.email}.`,
+  ].join('\n\n');
+
+const workAuthAnswer = (lang: AnswerLang) =>
+  [
+    pick(lang, {
+      en: `Visa, sponsorship and work-authorization details aren't documented in the portfolio, so I can't answer that honestly.`,
+      hi: `वीज़ा, स्पॉन्सरशिप या वर्क-ऑथराइजेशन की जानकारी पोर्टफोलियो में नहीं है।`,
+      hinglish: `Visa, sponsorship ya work-authorization ki detail portfolio mein nahi hai.`,
+    }),
+    `He is based in ${personalInfo.contact.location} and open to discussing the arrangement for the right role. The direct line is ${personalInfo.contact.email} or WhatsApp ${personalInfo.contact.phone}.`,
+  ].join('\n\n');
+
+const portfolioTechAnswer = () => {
+  const self = projects.find((project) => project.id === 'anurag-portfolio');
+  return [
+    `This site is one of his builds${self ? ` — ${self.subtitle}.` : '.'}`,
+    self
+      ? `${self.description}\n\nUnder the hood: ${self.technologies.join(' · ')}. The hero sculpture is a hand-written Three.js scene (lit torus knot, particle field, drifting grid), animation is Framer Motion, and the assistant you're talking to reads the same data files that render every section.`
+      : `The hero is a hand-written Three.js scene and animation runs on Framer Motion.`,
+  ].join('\n\n');
+};
+
+const compareAnswer = (a: ProjectItem, b: ProjectItem, lang: AnswerLang) =>
+  [
+    `${shortLabel(a)} vs ${shortLabel(b)} — different jobs, different trade-offs.`,
+    `• ${shortLabel(a)} (${a.category}, ${a.language}): ${a.highlights[0]} Stack: ${a.technologies.slice(0, 5).join(', ')}.`,
+    `• ${shortLabel(b)} (${b.category}, ${b.language}): ${b.highlights[0]} Stack: ${b.technologies.slice(0, 5).join(', ')}.`,
+    pick(lang, {
+      en: `Rough guide: if the role is product/full-stack, the first one is closer; if it is AI or research, the second. Name either and I'll pull its full build story.`,
+      hi: `प्रोडक्ट/फुल-स्टैक भूमिका के लिए पहला, AI/रिसर्च के लिए दूसरा अधिक नज़दीक है।`,
+      hinglish: `Product/full-stack role ke liye pehla, AI/research ke liye dusra zyada close hai.`,
+    }),
+  ].join('\n\n');
+
 const expandTopic = (topic: string, lang: AnswerLang): { text: string; suggestions: string[] } => {
   if (topic.startsWith('project:')) {
     const project = projects.find((entry) => `project:${entry.id}` === topic);
@@ -696,6 +1272,51 @@ const expandTopic = (topic: string, lang: AnswerLang): { text: string; suggestio
   }
 
   switch (topic) {
+    case 'weakness':
+      return {
+        text: weaknessAnswer(lang),
+        suggestions: ['How much experience does he have?', 'Why should we hire him?', 'Share his resume'],
+      };
+    case 'experience_level':
+      return {
+        text: experienceLevelAnswer(lang),
+        suggestions: ['Show his projects', 'Tell me about the research', 'Is he available for roles?'],
+      };
+    case 'achievements':
+      return {
+        text: achievementsAnswer(lang),
+        suggestions: ['Tell me about the ICNACT paper', 'Share his resume', 'Show his projects'],
+      };
+    case 'summary':
+      return {
+        text: summaryAnswer(lang),
+        suggestions: ['Show his projects', 'Walk me through C-DAC work', 'How do I contact him?'],
+      };
+    case 'smalltalk':
+      return {
+        text: smalltalkAnswer(lang),
+        suggestions: ['What is his tech stack?', 'Tell me about the research', 'Show his projects'],
+      };
+    case 'hobbies':
+      return {
+        text: hobbiesAnswer(lang),
+        suggestions: ['Show his projects', 'What is his tech stack?', 'How do I contact him?'],
+      };
+    case 'spoken_languages':
+      return {
+        text: spokenLanguagesAnswer(lang),
+        suggestions: ['Is he available for roles?', 'How do I contact him?', 'Share his resume'],
+      };
+    case 'work_auth':
+      return {
+        text: workAuthAnswer(lang),
+        suggestions: ['Is he available for roles?', 'How do I contact him?', 'Share his resume'],
+      };
+    case 'portfolio_tech':
+      return {
+        text: portfolioTechAnswer(),
+        suggestions: ['Tell me about HerdIntel', 'What is his tech stack?', 'Show his projects'],
+      };
     case 'about':
       return {
         text: [personalInfo.summary, ...personalInfo.aboutText].join('\n\n'),
@@ -761,7 +1382,7 @@ const expandTopic = (topic: string, lang: AnswerLang): { text: string; suggestio
       };
     default:
       return {
-        text: `I can go deeper on any of these: projects, the C-DAC observability work, the ICNACT 2026 paper, his tech stack, education, certifications or availability.`,
+        text: `I can go deeper on any of these: projects, the C-DAC real-time vision work, the ICNACT 2026 paper, his tech stack, education, certifications or availability.`,
         suggestions: ['Show his projects', 'Tell me about the research', 'What is his tech stack?'],
       };
   }
@@ -778,10 +1399,10 @@ export const answerQuestion = (
   const lang = detectLanguage(input);
   const lang3 = answerLang(lang);
   const normalized = normalize(input);
-  const tokens = new Set(tokenize(input));
+  const tokens = expandTokens(input);
 
   const reply = (topic: string, text: string, suggestions: string[]): AssistantReply => ({
-    text,
+    text: humanize(topic, text, input, lang3),
     lang,
     topic,
     suggestions,
@@ -805,23 +1426,84 @@ export const answerQuestion = (
 
   // 2. Follow-up: expand the topic we were just discussing -----------------
   const wantsMore =
-    /\b(more|details?|explain|elaborate|expand|continue|go on|deeper|why)\b/i.test(input) &&
-    input.trim().split(/\s+/).length <= 5;
+    /\b(more|details?|explain|elaborate|expand|continue|go on|deeper|why|how so)\b/i.test(input) &&
+    input.trim().split(/\s+/).length <= 6;
 
   if (wantsMore && context?.lastTopic) {
     const expanded = expandTopic(context.lastTopic, lang3);
     return reply(context.lastTopic, expanded.text, expanded.suggestions);
   }
 
+  // 2b. Pronoun follow-ups: "what stack does it use?" after a project answer.
+  const rememberedProject = context?.lastTopic?.startsWith('project:')
+    ? projects.find((entry) => `project:${entry.id}` === context.lastTopic)
+    : undefined;
+
+  if (
+    rememberedProject &&
+    /\b(it|its|that|this)\b/i.test(input) &&
+    /\b(stack|tech|technology|build|built|used?|architecture|works?)\b/i.test(input)
+  ) {
+    return reply(
+      `project:${rememberedProject.id}`,
+      `Stack for ${shortLabel(rememberedProject)}: ${rememberedProject.technologies.join(' · ')}.\n\nWhat it does: ${rememberedProject.description}`,
+      projectSuggestions(rememberedProject)
+    );
+  }
+
+  // 2c. "Which projects use X?" ---------------------------------------------
+  const techUsage = projectsUsingTech(input);
+  if (techUsage) {
+    return reply(
+      'project_by_tech',
+      [
+        `Projects that actually use ${techUsage.tech}:`,
+        techUsage.projects
+          .map(
+            (project) =>
+              `• ${shortLabel(project)} — ${project.technologies.join(', ')}${
+                project.liveUrl ? ' (live demo)' : ''
+              }`
+          )
+          .join('\n'),
+        `Ask about any of them and I'll give you the architecture, outcome and links.`,
+      ].join('\n\n'),
+      [`Tell me about ${shortLabel(techUsage.projects[0])}`, 'Show all projects', 'What is his tech stack?']
+    );
+  }
+
+  // 2d. Comparing two named projects ---------------------------------------
+  if (/\b(compare|vs\.?|versus|difference between)\b/i.test(input)) {
+    const named = findNamedProjects(input);
+    if (named.length >= 2) {
+      return reply('compare', compareAnswer(named[0], named[1], lang3), [
+        `Tell me about ${shortLabel(named[0])}`,
+        `Tell me about ${shortLabel(named[1])}`,
+        'Show all projects',
+      ]);
+    }
+  }
+
   // 2. Direct tool / technology question -----------------------------------
   const techNote = findTechNote(input);
   if (techNote) {
     const project = findProject(normalized, tokens);
+    const unknownTech = [...tokens].find(
+      (token) =>
+        token.length > 4 &&
+        !DATA_VOCAB.has(token) &&
+        !STOPWORDS.has(token) &&
+        !SYNONYM_GROUPS.some((group) => group.includes(token)) &&
+        !HINDI_SYNONYMS[token]
+    );
     return reply(
       'tech',
       [
         TECH_NOTES[techNote],
         project ? `It shows up in ${project.title.split('—')[0].trim()}.` : '',
+        unknownTech
+          ? `One honest note: "${unknownTech}" isn't anywhere in his verified record, so I can't claim experience with it.`
+          : '',
         pick(lang3, {
           en: `Want the project-level detail or the full stack breakdown?`,
           hi: `प्रोजेक्ट-स्तर विवरण चाहिए या पूरा स्टैक?`,
@@ -832,6 +1514,33 @@ export const answerQuestion = (
         .join('\n\n'),
       ['Show the full tech stack', 'Tell me about the ICNACT 2026 paper', 'We have an open role']
     );
+  }
+
+  // 2d-2. A specific certification by name ---------------------------------
+  const certMention = findNamedCertification(input);
+  if (certMention && /\b(cert|certificate|certification|forage|simulation|course)\b/i.test(input)) {
+    return reply(
+      'certifications',
+      [
+        `${certMention.title} — ${certMention.issuer} (${certMention.date}).`,
+        certMention.description,
+        `Badge on the site: ${certMention.badge}.`,
+      ].join('\n\n'),
+      ['What are all his certifications?', 'Tell me about the ICNACT paper', 'Share his resume']
+    );
+  }
+
+  // 2e. A named technology in a skill-style question -----------------------
+  const skillMention = findNamedSkill(input);
+  if (
+    skillMention &&
+    /\b(know|knows|knows?|skill|skills|experience|used?|worked?|familiar|proficient|expertise|good at|strong at|comfortable with|what is|whats|explain|tell me about)\b/i.test(input)
+  ) {
+    return reply('skills', skillDetailAnswer(skillMention.name, lang3), [
+      'Show the full tech stack',
+      'Which projects use it?',
+      'Is he available for roles?',
+    ]);
   }
 
   // 3. A specific project was named ----------------------------------------
@@ -872,10 +1581,32 @@ export const answerQuestion = (
   const isShortGreeting = normalized.trim().split(' ').length <= 3;
 
   if (!best || best.score === 0) {
+    // Semantic-ish retrieval over every verified fact before admitting defeat.
+    const chunks = retrieveKnowledge(input);
+    if (chunks.length) {
+      return reply(
+        'retrieved',
+        [
+          pick(lang3, {
+            en: `Here's what the portfolio actually documents on that:`,
+            hi: `पोर्टफोलियो में इस पर जो दर्ज है:`,
+            hinglish: `Portfolio mein ispe jo documented hai:`,
+          }),
+          chunks.map((chunk) => `• ${chunk.title} — ${chunk.text}`).join('\n\n'),
+          pick(lang3, {
+            en: `If that isn't the angle you meant, name the project or role and I'll go precise. You can also reach him directly at ${personalInfo.contact.email}.`,
+            hi: `अगर यह वही नहीं था, तो प्रोजेक्ट या भूमिका का नाम बताएं। सीधे संपर्क: ${personalInfo.contact.email}।`,
+            hinglish: `Agar ye wahi nahi tha, toh project ya role ka naam bata do. Direct contact: ${personalInfo.contact.email}.`,
+          }),
+        ].join('\n\n'),
+        ['Show his projects', 'Walk me through C-DAC work', 'Share his resume']
+      );
+    }
+
     return reply(
       'fallback',
       pick(lang3, {
-        en: `I don't have a verified answer for that one, so I won't guess. I can speak precisely about Anurag's projects, C-DAC observability work, the ICNACT 2026 paper, his stack, education, certifications and availability — or you can email him at ${personalInfo.contact.email}.`,
+        en: `I don't have a verified answer for that one, so I won't guess. I can speak precisely about Anurag's projects, C-DAC real-time vision work, the ICNACT 2026 paper, his stack, education, certifications and availability — or you can email him at ${personalInfo.contact.email}.`,
         hi: `उस सवाल का सत्यापित जवाब मेरे पास नहीं है, इसलिए मैं अनुमान नहीं लगाऊँगा। आप प्रोजेक्ट्स, C-DAC काम, ICNACT 2026 पेपर, टेक स्टैक, पढ़ाई, सर्टिफिकेट्स या उपलब्धता के बारे में पूछ सकते हैं — या सीधे ${personalInfo.contact.email} पर मेल करें।`,
         hinglish: `Is sawaal ka verified jawab mere paas nahi hai, isliye guess nahi karunga. Aap projects, C-DAC work, ICNACT 2026 paper, tech stack, padhai, certifications ya availability ke bare mein pooch sakte hain — ya seedha ${personalInfo.contact.email} par mail kar dein.`,
       }),
@@ -928,9 +1659,9 @@ export const answerQuestion = (
           }),
           `${personalInfo.availability}.`,
           pick(lang3, {
-            en: `Strongest fit: full-stack product engineering, DevOps/observability, and applied AI/ML. Location: ${personalInfo.contact.location}.`,
-            hi: `सबसे उपयुक्त: full-stack product engineering, DevOps/observability और applied AI/ML। स्थान: ${personalInfo.contact.location}।`,
-            hinglish: `Best fit: full-stack product engineering, DevOps/observability aur applied AI/ML. Location: ${personalInfo.contact.location}.`,
+            en: `Strongest fit: full-stack product engineering, edge AI / computer vision, and applied AI/ML. Location: ${personalInfo.contact.location}.`,
+            hi: `सबसे उपयुक्त: full-stack product engineering, edge AI / computer vision और applied AI/ML। स्थान: ${personalInfo.contact.location}।`,
+            hinglish: `Best fit: full-stack product engineering, edge AI / computer vision aur applied AI/ML. Location: ${personalInfo.contact.location}.`,
           }),
           `Direct: ${personalInfo.contact.email} · ${personalInfo.contact.phone}`,
         ].join('\n\n'),
@@ -1041,7 +1772,20 @@ export const answerQuestion = (
         'Which project is most impressive?',
       ]);
 
-    case 'certifications':
+    case 'certifications': {
+      const specificCert = findNamedCertification(input);
+      if (specificCert) {
+        return reply(
+          'certifications',
+          [
+            `${specificCert.title} — ${specificCert.issuer} (${specificCert.date}).`,
+            specificCert.description,
+            `Badge on the site: ${specificCert.badge}.`,
+          ].join('\n\n'),
+          ['What are all his certifications?', 'Tell me about the ICNACT paper', 'Share his resume']
+        );
+      }
+
       return reply(
         'certifications',
         [
@@ -1054,6 +1798,7 @@ export const answerQuestion = (
         ].join('\n\n'),
         ['Tell me about the ICNACT paper', 'What did he do at IIIT?', 'Share his resume']
       );
+    }
 
     case 'resume':
       return reply(
@@ -1172,6 +1917,137 @@ export const answerQuestion = (
         'How do I contact him?',
       ]);
 
+    case 'smalltalk':
+      return reply('smalltalk', smalltalkAnswer(lang3), [
+        'What is his tech stack?',
+        'Tell me about the ICNACT 2026 research',
+        'Is he available for roles?',
+      ]);
+
+    case 'weakness':
+      return reply('weakness', weaknessAnswer(lang3), [
+        'How much experience does he have?',
+        'Why should we hire him?',
+        'Is he available for roles?',
+      ]);
+
+    case 'experience_level':
+      return reply('experience_level', experienceLevelAnswer(lang3), [
+        'Show his projects',
+        'Tell me about the research',
+        'Share his resume',
+      ]);
+
+    case 'achievements':
+      return reply('achievements', achievementsAnswer(lang3), [
+        'Tell me about the ICNACT 2026 paper',
+        'Show his projects',
+        'Share his resume',
+      ]);
+
+    case 'summary':
+      return reply('summary', summaryAnswer(lang3), [
+        'Show his strongest project',
+        'Walk me through C-DAC work',
+        'How do I contact him?',
+      ]);
+
+    case 'hobbies':
+      return reply('hobbies', hobbiesAnswer(lang3), [
+        'Show his projects',
+        'What is his tech stack?',
+        'How do I contact him?',
+      ]);
+
+    case 'spoken_languages':
+      return reply('spoken_languages', spokenLanguagesAnswer(lang3), [
+        'Is he available for roles?',
+        'Share his resume',
+        'How do I contact him?',
+      ]);
+
+    case 'work_auth':
+      return reply('work_auth', workAuthAnswer(lang3), [
+        'Is he available for roles?',
+        'How do I contact him?',
+        'Share his resume',
+      ]);
+
+    case 'portfolio_tech':
+      return reply('portfolio_tech', portfolioTechAnswer(), [
+        'Tell me about HerdIntel',
+        'What is his tech stack?',
+        'Show his projects',
+      ]);
+
+    case 'compare': {
+      const seen = new Set<string>();
+      const named: ProjectItem[] = [];
+      for (const entry of projects) {
+        const haystack = normalize(`${entry.title} ${entry.repoName} ${shortLabel(entry)}`);
+        const hit = [...tokens].some((token) => token.length > 3 && hasPhrase(haystack, token));
+        if (hit && !seen.has(entry.id)) {
+          seen.add(entry.id);
+          named.push(entry);
+        }
+      }
+      if (named.length >= 2) {
+        return reply('compare', compareAnswer(named[0], named[1], lang3), [
+          `Tell me about ${shortLabel(named[0])}`,
+          `Tell me about ${shortLabel(named[1])}`,
+          'Show all projects',
+        ]);
+      }
+      return reply('compare', bestProjectAnswer(lang3), [
+        'Show all projects',
+        'Tell me about the research',
+        'Is he available for roles?',
+      ]);
+    }
+
+    case 'project_by_tech': {
+      const generic = new Set([
+        'which', 'what', 'where', 'project', 'projects', 'use', 'used', 'uses', 'built', 'build',
+        'with', 'his', 'did', 'work', 'worked', 'stack', 'tech', 'technology', 'technologies', 'made', 'using',
+      ]);
+      const techTokens = [...tokens].filter((token) => token.length >= 3 && !generic.has(token));
+      const matchedTech = new Set<string>();
+      const matched = projects.filter((entry) =>
+        entry.technologies.some((tech) =>
+          techTokens.some((token) => {
+            if (tech.toLowerCase().includes(token)) {
+              matchedTech.add(tech);
+              return true;
+            }
+            return false;
+          })
+        )
+      );
+
+      if (matched.length && techTokens.length) {
+        return reply(
+          'project_by_tech',
+          [
+            `Projects that actually use ${[...matchedTech].slice(0, 3).join(', ')}:`,
+            matched
+              .map(
+                (entry) =>
+                  `• ${shortLabel(entry)} — ${entry.technologies.join(', ')}${entry.liveUrl ? ' (live demo)' : ''}`
+              )
+              .join('\n'),
+            `Ask about any of them and I'll give you the architecture, outcome and links.`,
+          ].join('\n\n'),
+          [`Tell me about ${shortLabel(matched[0])}`, 'Show all projects', 'What is his tech stack?']
+        );
+      }
+
+      return reply('projects', projectsOverview(lang3), [
+        'Tell me about HerdIntel',
+        'Show the Ayodhya SHG system',
+        'Which project is most impressive?',
+      ]);
+    }
+
     case 'capabilities':
       return reply(
         'capabilities',
@@ -1193,8 +2069,9 @@ export const answerQuestion = (
 };
 
 export const starterPrompts = [
-  '💼 We have an open DevOps / Full-Stack role',
+  '🎥 Walk me through the Jetson AGX vision pipeline',
   '🔬 Explain the ICNACT 2026 research',
   '🚀 What is his strongest project?',
   '💬 Anurag ko hire karna hai, kya woh available hain?',
+  '🧠 Which projects use MongoDB?',
 ];

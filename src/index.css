@@ -262,6 +262,25 @@ h2.font-display {
   -webkit-text-fill-color: transparent;
 }
 
+/* Slow living gradient used on the hero headline words */
+.gradient-text-live {
+  background: linear-gradient(110deg, #FF7A45 0%, #F0A24B 38%, #E7C79A 62%, #FF9E6B 100%);
+  background-size: 240% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: text-flow 9s ease-in-out infinite alternate;
+  will-change: background-position;
+}
+
+@keyframes text-flow {
+  from { background-position: 0% 50%; }
+  to { background-position: 100% 50%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gradient-text-live { animation: none; }
+}
+
 /* Subtle Film Grain Overlay */
 .bg-grain {
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.035'/%3E%3C/svg%3E");

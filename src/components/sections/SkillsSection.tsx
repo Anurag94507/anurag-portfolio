@@ -6,6 +6,8 @@ import {
   Database,
   Cloud,
   Cpu,
+  Brain,
+  Eye,
   Sparkles,
   Zap,
 } from 'lucide-react';
@@ -15,7 +17,7 @@ import { TiltCard } from '../ui/TiltCard';
 export const SkillsSection: React.FC = () => {
   const [activeTab, setActiveTab] = useState(0);
 
-  const categoryIcons = [Code, Server, Database, Cloud, Cpu];
+  const categoryIcons = [Code, Server, Brain, Eye, Database, Cloud, Cpu];
 
   return (
     <section id="skills" className="relative py-24 px-4 overflow-hidden">
@@ -67,7 +69,7 @@ export const SkillsSection: React.FC = () => {
             transition={{ delay: 0.2 }}
             className="mt-4 max-w-xl text-stone-400 text-sm sm:text-base leading-relaxed"
           >
-            Categorized competency breakdown spanning low-level algorithms, web frameworks, and production observability.
+            Languages, full-stack frameworks, edge vision pipelines and observability tooling — organized the way the work actually ships.
           </motion.p>
         </div>
 

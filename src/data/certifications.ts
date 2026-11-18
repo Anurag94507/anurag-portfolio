@@ -55,11 +55,20 @@ export const certifications: CertificationItem[] = [
     badge: "Academic Merit"
   },
   {
+    id: "aws-forage",
+    title: "AWS Solutions Architecture Job Simulation",
+    issuer: "Amazon Web Services — Forage",
+    type: "Simulation",
+    date: "2026",
+    description: "Designed scalable hosting architectures, compared relational and NoSQL storage options, and reasoned about cost and elasticity trade-offs for cloud workloads.",
+    badge: "Cloud Architecture"
+  },
+  {
     id: "bcg-forage",
     title: "Strategy Consulting Virtual Experience",
     issuer: "Boston Consulting Group (BCG) — Forage",
     type: "Simulation",
-    date: "2024",
+    date: "2026",
     description: "Completed real-world business case analyses, digital transformation modeling, and strategic market entry synthesis.",
     badge: "Industry Simulation"
   },
@@ -68,7 +77,7 @@ export const certifications: CertificationItem[] = [
     title: "Operations & Industrial Engineering Simulation",
     issuer: "Siemens — Forage",
     type: "Simulation",
-    date: "2024",
+    date: "2026",
     description: "Executed factory automation modeling, production efficiency diagnosis, and industrial operational optimization protocols.",
     badge: "Industry Simulation"
   }

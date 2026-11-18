@@ -39,19 +39,21 @@ export const personalInfo: PersonalInfo = {
   name: "Anurag Mishra",
   avatarUrl: "/assets/anurag-mishra.jpg",
   titles: [
-    "DevOps & Cloud Engineer",
-    "Full-Stack Software Engineer",
-    "AI/ML Researcher & Systems Architect",
-    "Observability Specialist (Prometheus & Grafana)",
+    "Full-Stack Engineer",
+    "AI/ML Researcher",
+    "Edge AI & Computer Vision",
+    "Real-Time Systems & Observability",
   ],
-  tagline: "Engineering production-grade full-stack architectures, real-time observability pipelines & applied AI intelligence.",
-  availability: "Open for DevOps, Full-Stack & AI/ML Engineering Roles",
-  summary: "B.Tech Information Technology student, DevOps & Full-Stack software engineer, and AI/ML researcher with proven experience building real-time observability telemetry, multi-agent evaluation frameworks, and high-availability production web systems.",
+  tagline:
+    "Full-stack engineer and AI/ML researcher shipping real-time computer vision on edge hardware, explainable livestock intelligence, and production web platforms.",
+  availability: "Open for Full-Stack, AI/ML & Edge AI Roles",
+  summary:
+    "Full-stack engineer and AI/ML researcher pursuing a B.Tech in Information Technology. Currently engineering real-time multi-camera computer vision pipelines on NVIDIA Jetson AGX at C-DAC, co-authoring IEEE-format research on federated learning and explainable AI, and shipping production TypeScript/MERN platforms end to end.",
   aboutText: [
-    "I am an Information Technology undergraduate at Dr. Ram Manohar Lohia Avadh University, Ayodhya (2023 - 2027), operating across DevOps observability, modern full-stack engineering, and applied artificial intelligence.",
-    "My technical stack spans JavaScript, TypeScript, Python, React, Node.js, Express, and MongoDB, bolstered by hands-on DevOps telemetry using Prometheus, Grafana, Linux server architecture, and automated CI/CD pipelines.",
-    "Beyond software craftsmanship, I conduct applied AI/ML research. I co-authored and presented an IEEE-format research paper at ICNACT 2026 (VIT Bhopal), identifying 10 critical deployment gaps in dairy cattle welfare monitoring and proposing an edge-cloud hybrid with temporal graph transformers and SHAP-based explainability.",
-    "Whether developing real-time monitoring and observability dashboards at C-DAC or leading cross-functional engineering teams for government administrative initiatives in Ayodhya, I build resilient, observable software that makes a tangible impact."
+    "I am an Information Technology undergraduate at Dr. Ram Manohar Lohia Avadh University, Ayodhya (2023–2027), working across full-stack engineering, applied AI research, and edge computer vision.",
+    "At C-DAC Thiruvananthapuram I build real-time multi-channel vision pipelines on NVIDIA Jetson AGX with DeepStream and GStreamer — ingesting live RTSP camera streams, driving CUDA-accelerated on-device inference, and exposing it through a PyQt5 control surface backed by Grafana and Prometheus observability.",
+    "My research at IIIT Naya Raipur audited the published IEEE Access CowNet-AI multi-agent system, identified 10 deployment and architectural gaps, and proposed an edge-cloud hybrid architecture with temporal graph transformers, multimodal sensor fusion, SHAP/LIME explainability and federated learning — presented at ICNACT 2026, VIT Bhopal.",
+    "On the product side I ship typed, production-ready applications end to end: HerdIntel for dairy welfare monitoring, the Ayodhya Blessings heritage platform, and an SHG inventory and billing system for the Chief Development Office that replaced manual stock ledgers for field-level operators.",
   ],
   education: {
     institution: "Dr. Ram Manohar Lohia Avadh University",
@@ -64,44 +66,47 @@ export const personalInfo: PersonalInfo = {
     cgpaYear3: "7.12 CGPA",
     coursework: [
       "Data Structures & Algorithms",
-      "Object-Oriented Programming",
+      "Machine Learning / AI",
+      "Linear Algebra",
+      "Probability & Statistics",
       "Database Management Systems",
-      "Operating Systems & Linux",
-      "Software Engineering & DevOps",
-      "System Design & Cloud Architecture",
-      "Artificial Intelligence & Machine Learning"
-    ]
+      "Operating Systems",
+      "Object-Oriented Programming",
+      "Software Engineering",
+      "System Design",
+    ],
   },
   contact: {
     email: "mranurag0007@gmail.com",
     phone: "+91-7800509636",
     whatsapp: "https://wa.me/917800509636?text=Hi%20Anurag,%20I%20saw%20your%20portfolio",
-    location: "Sultanpur / Ayodhya, Uttar Pradesh, India",
+    location: "Sultanpur, Uttar Pradesh, India",
     github: "https://github.com/Anurag94507",
     linkedin: "https://www.linkedin.com/in/anurag-mishra-21b87b244",
     resumeUrl: "/assets/Anurag_Mishra_Resume.pdf",
   },
   stats: [
     {
-      label: "Deployed Projects",
+      label: "Production Projects",
       value: 6,
       suffix: "+",
-      description: "Full-stack & DevOps systems live in production with real user bases"
+      description: "Full-stack, edge AI and research-backed systems shipped end to end",
     },
     {
-      label: "AI Deployment Gaps",
+      label: "Metrics Monitored",
       value: 10,
-      description: "Identified & resolved in published multi-agent benchmark"
+      suffix: "+",
+      description: "Grafana & Prometheus health, latency and application metrics in production",
     },
     {
       label: "Int'l Research Paper",
       value: 1,
-      description: "Presented at ICNACT 2026 (VIT Bhopal University)"
+      description: "Co-authored and presented at ICNACT 2026 (VIT Bhopal University)",
     },
     {
       label: "Internships & Roles",
       value: 3,
-      description: "C-DAC Thiruvananthapuram, IIIT Naya Raipur & CDO Ayodhya"
-    }
-  ]
+      description: "C-DAC Thiruvananthapuram, IIIT Naya Raipur & CDO Ayodhya",
+    },
+  ],
 };

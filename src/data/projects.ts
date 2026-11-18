@@ -46,7 +46,7 @@ export const projects: ProjectItem[] = [
   },
   {
     id: "herdintel-ai",
-    title: "HerdIntel-AI — Precision Dairy Intelligence",
+    title: "HerdIntel — Precision Dairy Intelligence Platform",
     subtitle: "Real-time livestock welfare telemetry, social graph diagnostics & AI edge analytics",
     repoName: "Anurag94507/HerdIntel-AI",
     category: "AI/Research",
@@ -56,7 +56,7 @@ export const projects: ProjectItem[] = [
     paperUrl: "#research",
     language: "JavaScript",
     image: "/assets/projects/herdintel.jpg",
-    technologies: ["React.js", "Node.js", "Express.js", "MongoDB", "Chart.js", "Tailwind CSS"],
+    technologies: ["React.js", "Node.js", "Express.js", "MongoDB", "Chart.js", "SHAP/LIME", "Federated Learning"],
     gradient: "from-neon-cyan/20 via-blue-600/10 to-dark-card/30",
     description: "Full-stack livestock intelligence platform designed to monitor dairy cattle welfare, detect isolation risks, and visualize herd social-network graphs. Backed by an IEEE paper co-authored and presented at ICNACT 2026.",
     highlights: [
@@ -73,7 +73,7 @@ export const projects: ProjectItem[] = [
   },
   {
     id: "ayodhya-blessings-main",
-    title: "The-divine-of-Ayodhya-main-1-",
+    title: "Ayodhya Blessings — The Divine of Ayodhya",
     subtitle: "Modern TypeScript heritage discovery portal with decoupled Vite & Node.js backend",
     repoName: "Anurag94507/The-divine-of-Ayodhya-main-1-",
     category: "Full-Stack",
@@ -82,7 +82,7 @@ export const projects: ProjectItem[] = [
     githubUrl: "https://github.com/Anurag94507/The-divine-of-Ayodhya-main-1-",
     language: "TypeScript",
     image: "/assets/projects/ayodhya.jpg",
-    technologies: ["React (TypeScript)", "Vite", "Node.js", "Express.js", "Tailwind CSS"],
+    technologies: ["React (TypeScript)", "Vite", "Node.js", "Express.js", "REST API"],
     gradient: "from-amber-500/20 via-orange-600/10 to-dark-card/30",
     description: "A fast, fully-typed modern web application exploring Ayodhya's historical temples, sanctified ghats, and spiritual heritage sites. Features dynamic map routing, rich multimedia narratives, and decoupled client-server architecture.",
     highlights: [

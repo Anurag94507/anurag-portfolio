@@ -75,7 +75,7 @@ export const AboutSection: React.FC = () => {
                 </div>
                 <div>
                   <h3 className="text-xl font-display font-bold text-white">Anurag Mishra</h3>
-                  <p className="text-xs font-mono text-neon-cyan">DevOps &bull; Full-Stack &bull; AI/ML Researcher</p>
+                  <p className="text-xs font-mono text-neon-cyan">Full-Stack &bull; Edge AI &bull; AI/ML Research</p>
                   <div className="flex items-center gap-1.5 text-xs text-stone-400 mt-1">
                     <MapPin className="w-3.5 h-3.5 text-stone-500" />
                     <span>Ayodhya / Sultanpur, India</span>
@@ -105,13 +105,18 @@ export const AboutSection: React.FC = () => {
 
                 <div className="pt-2 border-t border-stone-800 flex items-center justify-between text-xs">
                   <span className="text-stone-400">Academic Standing:</span>
-                  <div className="flex items-center gap-2">
+                  <div className="flex flex-wrap items-center justify-end gap-1.5">
                     <span className="px-2 py-0.5 rounded-full bg-neon-cyan/15 text-neon-cyan font-mono text-[11px]">
-                      1st Yr: {personalInfo.education.cgpaYear1}
+                      Y1: {personalInfo.education.cgpaYear1}
                     </span>
                     <span className="px-2 py-0.5 rounded-full bg-neon-violet/15 text-neon-violet font-mono text-[11px]">
-                      2nd Yr: {personalInfo.education.cgpaYear2}
+                      Y2: {personalInfo.education.cgpaYear2}
                     </span>
+                    {personalInfo.education.cgpaYear3 && (
+                      <span className="px-2 py-0.5 rounded-full bg-neon-amber/15 text-neon-amber font-mono text-[11px]">
+                        Y3: {personalInfo.education.cgpaYear3}
+                      </span>
+                    )}
                   </div>
                 </div>
               </div>
@@ -145,9 +150,9 @@ export const AboutSection: React.FC = () => {
               </div>
               <div className="p-4 rounded-2xl glass-card border border-white/10">
                 <Cpu className="w-5 h-5 text-emerald-400 mb-2" />
-                <h4 className="text-sm font-semibold text-white">DevOps & SRE</h4>
+                <h4 className="text-sm font-semibold text-white">Edge AI & Vision</h4>
                 <p className="text-xs text-stone-400 mt-1">
-                  Prometheus, Grafana, Linux, CI/CD, Alerting Telemetry
+                  DeepStream, GStreamer, CUDA, Jetson AGX, RTSP
                 </p>
               </div>
               <div className="p-4 rounded-2xl glass-card border border-white/10">
@@ -186,12 +191,12 @@ export const AboutSection: React.FC = () => {
               {/* Core Strengths Checklist */}
               <div className="pt-6 border-t border-stone-800/80 mt-6 grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {[
-                  "Production-grade MERN & TypeScript architectures",
-                  "Real-time observability with Grafana & Prometheus",
-                  "Multi-agent benchmark audits & IEEE publications",
-                  "Cross-functional team leadership & civic impact",
-                  "Solid Data Structures & Algorithmic foundations",
-                  "Performance optimization & mobile-first UI/UX",
+                  "Production-grade MERN, Next.js & TypeScript platforms",
+                  "Real-time multi-camera CV on NVIDIA Jetson AGX",
+                  "Grafana & Prometheus observability, 10+ live metrics",
+                  "IEEE-format research with SHAP/LIME explainability",
+                  "Cross-functional team leadership & civic deployments",
+                  "Solid DSA, REST API design & system design grounding",
                 ].map((strength) => (
                   <div key={strength} className="flex items-start gap-2.5">
                     <CheckCircle2 className="w-4 h-4 text-neon-cyan flex-shrink-0 mt-0.5" />

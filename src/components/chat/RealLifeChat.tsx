@@ -13,6 +13,11 @@ import {
   RefreshCw,
   Database,
   Globe,
+  Mic,
+  MicOff,
+  Bell,
+  BellOff,
+  History,
   ChevronDown,
   ChevronUp,
   X,
@@ -22,6 +27,7 @@ import { WhatsAppIcon } from '../ui/Icons';
 import { personalInfo } from '../../data/personal';
 import {
   saveChatSessionToDB,
+  getAllChatSessionsFromDB,
   syncChatSessionToCloud,
   ChatSession,
   StoredChatMessage,
@@ -37,6 +43,19 @@ export const RealLifeChat: React.FC = () => {
   const [soundEnabled, setSoundEnabled] = useState(true);
   const [visitorInfo, setVisitorInfo] = useState({ name: '', email: '' });
   const lastTopicRef = useRef<string>('');
+
+  // Voice chat + spoken replies + restored history
+  const [voiceEnabled, setVoiceEnabled] = useState(false);
+  const [isListening, setIsListening] = useState(false);
+  const [voiceNotice, setVoiceNotice] = useState('');
+  const [historyRestored, setHistoryRestored] = useState(false);
+  const voiceEnabledRef = useRef(false);
+  const recognitionRef = useRef<any>(null);
+  const sendRef = useRef<(text?: string) => void>(() => {});
+
+  useEffect(() => {
+    voiceEnabledRef.current = voiceEnabled;
+  }, [voiceEnabled]);
 
   // Database vault state for Anurag (admin inspection)
   const [isAdminModalOpen, setIsAdminModalOpen] = useState(false);
@@ -77,41 +96,158 @@ export const RealLifeChat: React.FC = () => {
     return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   };
 
-  // Initial greeting
-  useEffect(() => {
-    const welcomeTimer = setTimeout(() => {
-      const initial: StoredChatMessage[] = [
-        {
-          id: 'welcome-1',
-          sender: 'anurag',
-          text: "Hey, thanks for checking out my work! I'm Anurag Mishra.",
-          timestamp: getFormattedTime(),
-          language: 'en',
-        },
-        {
-          id: 'welcome-2',
-          sender: 'anurag',
-          text: "I'm trained on his verified portfolio data — projects, C-DAC observability work, the ICNACT 2026 paper, stack, education and availability. Ask in English, Hindi or Hinglish.",
-          timestamp: getFormattedTime(),
-          language: 'en',
-          chips: ['Show his projects', 'Tell me about the research', 'Is he available for roles?'],
-        },
-      ];
-      setMessages(initial);
-      playSound('receive');
+  // ---- Spoken replies (text-to-speech) -----------------------------------
+  const speak = (text: string, language?: string, force = false) => {
+    if (typeof window === 'undefined' || !('speechSynthesis' in window)) return;
+    if (!voiceEnabledRef.current && !force) return;
 
-      // Save initial session to database
+    const clean = text
+      .replace(/[•*_#>`]/g, ' ')
+      .replace(/https?:\/\/\S+/g, 'link')
+      .replace(/\s+/g, ' ')
+      .slice(0, 700)
+      .trim();
+    if (!clean) return;
+
+    const utterance = new SpeechSynthesisUtterance(clean);
+    utterance.lang = language === 'hi' ? 'hi-IN' : 'en-IN';
+    utterance.rate = 1.03;
+    utterance.pitch = 1.02;
+
+    const voices = window.speechSynthesis.getVoices();
+    const preferred =
+      voices.find((voice) => voice.lang === utterance.lang) ??
+      voices.find((voice) => voice.lang.startsWith('en')) ??
+      voices[0];
+    if (preferred) utterance.voice = preferred;
+
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(utterance);
+  };
+
+  const stopSpeaking = () => {
+    if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+    }
+  };
+
+  // ---- Voice input (speech-to-text) --------------------------------------
+  const startListening = () => {
+    const Recognition =
+      (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+
+    if (!Recognition) {
+      setVoiceNotice('Voice input needs Chrome, Edge or Safari. You can still type.');
+      return;
+    }
+
+    stopSpeaking();
+    const recognition = new Recognition();
+    recognition.lang = navigator.language?.startsWith('hi') ? 'hi-IN' : 'en-IN';
+    recognition.interimResults = true;
+    recognition.continuous = false;
+    recognition.maxAlternatives = 1;
+
+    recognition.onresult = (event: any) => {
+      let interim = '';
+      let final = '';
+      for (let i = event.resultIndex; i < event.results.length; i += 1) {
+        const transcript = event.results[i][0].transcript;
+        if (event.results[i].isFinal) final += transcript;
+        else interim += transcript;
+      }
+      if (interim) setInputText(interim);
+      if (final.trim()) {
+        setInputText(final.trim());
+        setVoiceNotice('');
+        sendRef.current(final.trim());
+      }
+    };
+
+    recognition.onerror = (event: any) => {
+      setIsListening(false);
+      setVoiceNotice(
+        event?.error === 'not-allowed'
+          ? 'Microphone blocked — allow mic access in your browser settings.'
+          : 'Voice input stopped. Tap the mic to try again.'
+      );
+    };
+
+    recognition.onend = () => setIsListening(false);
+
+    recognitionRef.current = recognition;
+    setVoiceNotice('');
+    setIsListening(true);
+    try {
+      recognition.start();
+    } catch {
+      setIsListening(false);
+    }
+  };
+
+  const stopListening = () => {
+    try {
+      recognitionRef.current?.stop?.();
+    } catch {
+      // ignore
+    }
+    setIsListening(false);
+  };
+
+  // Restore the last saved conversation, otherwise greet.
+  useEffect(() => {
+    let cancelled = false;
+
+    const welcome: StoredChatMessage[] = [
+      {
+        id: 'welcome-1',
+        sender: 'anurag',
+        text: "Hey, thanks for checking out my work! I'm Anurag Mishra.",
+        timestamp: getFormattedTime(),
+        language: 'en',
+      },
+      {
+        id: 'welcome-2',
+        sender: 'anurag',
+        text: "I'm trained on his verified portfolio data — projects, the real-time vision work at C-DAC, the ICNACT 2026 paper, stack, education, certifications and availability. Type, tap a saved prompt, or press the mic and just talk. Ask in English, Hindi or Hinglish.",
+        timestamp: getFormattedTime(),
+        language: 'en',
+        chips: ['Show his projects', 'Tell me about the research', 'Is he available for roles?'],
+      },
+    ];
+
+    const bootTimer = setTimeout(async () => {
+      try {
+        const sessions = await getAllChatSessionsFromDB();
+        const latest = sessions.find((session) => (session.messages?.length ?? 0) > 2);
+        if (!cancelled && latest) {
+          setMessages(latest.messages);
+          setVisitorInfo({ name: latest.visitorName ?? '', email: latest.visitorEmail ?? '' });
+          setHistoryRestored(true);
+          playSound('receive');
+          return;
+        }
+      } catch {
+        // storage unavailable — fall through to a fresh greeting
+      }
+
+      if (cancelled) return;
+      setMessages(welcome);
+      playSound('receive');
       saveChatSessionToDB({
         sessionId,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
         language: 'en',
-        messages: initial,
+        messages: welcome,
         status: 'active',
       });
     }, 400);
 
-    return () => clearTimeout(welcomeTimer);
+    return () => {
+      cancelled = true;
+      clearTimeout(bootTimer);
+    };
   }, [sessionId]);
 
   // Save each update directly into the database and sync to cloud
@@ -193,8 +329,11 @@ export const RealLifeChat: React.FC = () => {
       const finalMessages = [...updated, replyMessage];
       setMessages(finalMessages);
       persistToDatabase(finalMessages, response.lang);
+      speak(response.text, response.lang);
     }, typingDelay);
   };
+
+  sendRef.current = handleSendMessage;
 
   const openDatabaseModal = () => {
     setIsAdminModalOpen(true);
@@ -249,6 +388,29 @@ export const RealLifeChat: React.FC = () => {
 
         {/* Action Controls */}
         <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0">
+          {/* Spoken replies toggle */}
+          <button
+            onClick={() => {
+              const next = !voiceEnabled;
+              setVoiceEnabled(next);
+              voiceEnabledRef.current = next;
+              if (!next) stopSpeaking();
+              else speak(
+                `Voice replies are on. Ask me anything about Anurag's work.`,
+                'en',
+                true
+              );
+            }}
+            className={`p-2 rounded-xl text-xs border transition-colors ${
+              voiceEnabled
+                ? 'bg-emerald-500/15 text-emerald-400 border-emerald-500/40'
+                : 'bg-stone-800 text-stone-500 border-white/10'
+            }`}
+            title={voiceEnabled ? 'Voice replies on — click to mute' : 'Enable spoken replies'}
+          >
+            {voiceEnabled ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
+          </button>
+
           {/* Database Viewer Toggle (For Anurag to inspect stored chats) */}
           <button
             onClick={openDatabaseModal}
@@ -267,9 +429,9 @@ export const RealLifeChat: React.FC = () => {
                 ? 'bg-neon-cyan/15 text-neon-cyan border-neon-cyan/30'
                 : 'bg-stone-800 text-stone-500 border-white/10'
             }`}
-            title={soundEnabled ? 'Mute Sound' : 'Enable Sound'}
+            title={soundEnabled ? 'Mute interface sounds' : 'Enable interface sounds'}
           >
-            {soundEnabled ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
+            {soundEnabled ? <Bell className="w-4 h-4" /> : <BellOff className="w-4 h-4" />}
           </button>
 
           {/* Direct Phone */}
@@ -285,7 +447,9 @@ export const RealLifeChat: React.FC = () => {
           <button
             onClick={() => {
               lastTopicRef.current = '';
-              setMessages([
+              stopSpeaking();
+              setHistoryRestored(false);
+              const resetMessages: StoredChatMessage[] = [
                 {
                   id: 'reset-1',
                   sender: 'anurag',
@@ -293,7 +457,9 @@ export const RealLifeChat: React.FC = () => {
                   timestamp: getFormattedTime(),
                   language: 'en',
                 },
-              ]);
+              ];
+              setMessages(resetMessages);
+              persistToDatabase(resetMessages, 'en');
             }}
             className="p-2 rounded-xl bg-stone-800/80 hover:bg-stone-800 text-stone-400 hover:text-white border border-white/10 transition-colors"
             title="Clear Chat"
@@ -310,9 +476,37 @@ export const RealLifeChat: React.FC = () => {
         <div className="text-center my-1">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-stone-900/80 border border-white/10 text-[11px] font-mono text-stone-400 shadow-sm">
             <span className="w-2 h-2 rounded-full bg-emerald-400" />
-            <span>Direct Channel &bull; Auto-stored to Database</span>
+            <span>Direct Channel &bull; Messages saved automatically</span>
           </div>
         </div>
+
+        {historyRestored && (
+          <div className="flex items-center justify-center gap-2 text-[11px] font-mono text-neon-cyan/90 bg-neon-cyan/5 border border-neon-cyan/20 rounded-xl px-3 py-2">
+            <History className="w-3.5 h-3.5" />
+            <span>Picked up your last saved conversation.</span>
+            <button
+              onClick={() => setHistoryRestored(false)}
+              className="text-stone-500 hover:text-white transition-colors"
+              aria-label="Dismiss"
+            >
+              <X className="w-3 h-3" />
+            </button>
+          </div>
+        )}
+
+        {isListening && (
+          <motion.div
+            initial={{ opacity: 0, y: -6 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="flex items-center justify-center gap-2 text-[11px] font-mono text-rose-300 bg-rose-500/10 border border-rose-400/30 rounded-xl px-3 py-2"
+          >
+            <span className="relative flex h-2.5 w-2.5">
+              <span className="absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-70 animate-ping" />
+              <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-rose-400" />
+            </span>
+            <span>Listening… speak now, I'll send it when you pause.</span>
+          </motion.div>
+        )}
 
         {messages.map((message) => {
           const isMe = message.sender === 'visitor';
@@ -348,6 +542,16 @@ export const RealLifeChat: React.FC = () => {
                   }`}
                 >
                   <span>{message.timestamp}</span>
+                  {!isMe && (
+                    <button
+                      onClick={() => speak(message.text, message.language, true)}
+                      className="ml-1 text-stone-500 hover:text-neon-cyan transition-colors"
+                      title="Play this reply out loud"
+                      aria-label="Play this reply out loud"
+                    >
+                      <Volume2 className="w-3.5 h-3.5" />
+                    </button>
+                  )}
                   {message.language && message.language !== 'en' && (
                     <span className="uppercase text-[9px] px-1 py-0.2 rounded bg-white/10">
                       {message.language}
@@ -435,6 +639,20 @@ export const RealLifeChat: React.FC = () => {
           }}
           className="flex items-center gap-2"
         >
+          <button
+            type="button"
+            onClick={isListening ? stopListening : startListening}
+            className={`p-3 rounded-2xl border transition-all flex-shrink-0 ${
+              isListening
+                ? 'bg-rose-500/20 border-rose-400/60 text-rose-300 animate-pulse'
+                : 'bg-stone-950 border-stone-800 text-stone-400 hover:text-neon-cyan hover:border-neon-cyan/50'
+            }`}
+            title={isListening ? 'Stop listening' : 'Speak your question'}
+            aria-label={isListening ? 'Stop listening' : 'Speak your question'}
+          >
+            {isListening ? <MicOff className="w-4 h-4" /> : <Mic className="w-4 h-4" />}
+          </button>
+
           <input
             ref={inputRef}
             type="text"
@@ -458,7 +676,7 @@ export const RealLifeChat: React.FC = () => {
         <div className="flex flex-wrap items-center justify-between text-[11px] font-mono text-stone-400 mt-2 px-1 gap-2">
           <span className="flex items-center gap-1 text-stone-500">
             <Clock className="w-3 h-3 text-emerald-400" />
-            Active &bull; Typically responds in minutes
+            {voiceNotice || (isListening ? 'Listening…' : 'Type or tap the mic — voice chat works in Chrome, Edge & Safari')}
           </span>
           <a
             href="https://wa.me/917800509636"

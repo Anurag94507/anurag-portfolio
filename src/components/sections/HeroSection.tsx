@@ -9,6 +9,7 @@ import {
   Phone,
   Briefcase,
   ShieldCheck,
+  ChevronDown,
 } from 'lucide-react';
 import { GithubIcon, LinkedinIcon, WhatsAppIcon } from '../ui/Icons';
 import { personalInfo } from '../../data/personal';
@@ -208,8 +209,18 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             <Sparkles className="w-4 h-4 text-neon-violet inline" />
             Hello World, I'm
           </p>
-          <h1 className="text-[2.7rem] leading-[1.05] sm:text-6xl md:text-7xl lg:text-8xl font-display font-extrabold tracking-tight text-stone-950 dark:text-white">
-            Anurag <span className="gradient-text">Mishra</span>
+          <h1 className="flex flex-wrap items-baseline justify-center gap-x-4 text-[2.7rem] leading-[1.05] sm:text-6xl md:text-7xl lg:text-8xl font-display font-extrabold tracking-tight text-stone-950 dark:text-white perspective-1000">
+            {['Anurag', 'Mishra'].map((word, i) => (
+              <motion.span
+                key={word}
+                initial={{ opacity: 0, y: 46, rotateX: -70, filter: 'blur(10px)' }}
+                animate={{ opacity: 1, y: 0, rotateX: 0, filter: 'blur(0px)' }}
+                transition={{ delay: 0.35 + i * 0.14, duration: 0.95, ease: [0.16, 1, 0.3, 1] }}
+                className={`inline-block preserve-3d ${i === 1 ? 'gradient-text gradient-text-live' : ''}`}
+              >
+                {word}
+              </motion.span>
+            ))}
           </h1>
         </motion.div>
 
@@ -234,8 +245,9 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           transition={{ delay: 0.55, duration: 0.7 }}
           className="mt-6 max-w-2xl text-base sm:text-lg text-stone-600 dark:text-stone-300/90 leading-relaxed font-sans"
         >
-          Welcome to my official portfolio. I am an Information Technology undergraduate at{' '}
-          <span className="font-semibold text-stone-800 dark:text-white">Dr. Ram Manohar Lohia Avadh University</span>, Ayodhya (2023–2027), architecting production-grade full-stack systems, real-time DevOps observability telemetry, and applied AI systems with research presented at{' '}
+          I'm an Information Technology undergraduate at{' '}
+          <span className="font-semibold text-stone-800 dark:text-white">Dr. Ram Manohar Lohia Avadh University</span>, Ayodhya (2023–2027). I build full-stack products end to end, run real-time computer vision on{' '}
+          <span className="font-semibold text-stone-800 dark:text-white">NVIDIA Jetson AGX</span> with DeepStream and CUDA at C-DAC, and co-authored IEEE-format research on explainable, federated edge AI presented at{' '}
           <span className="text-neon-cyan font-semibold">ICNACT 2026</span>.
         </motion.p>
 
@@ -247,13 +259,13 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           className="mt-4 flex flex-wrap items-center justify-center gap-2 text-xs font-mono text-stone-600 dark:text-stone-400"
         >
           <span className="px-3 py-1 rounded-full bg-stone-200/70 dark:bg-stone-900/70 border border-stone-300 dark:border-white/10">
-            ⚡ Telemetry & Observability @ C-DAC
+            🎥 Real-Time Vision on Jetson AGX @ C-DAC
           </span>
           <span className="px-3 py-1 rounded-full bg-stone-200/70 dark:bg-stone-900/70 border border-stone-300 dark:border-white/10">
             🔬 IEEE Research Paper @ ICNACT 2026
           </span>
           <span className="px-3 py-1 rounded-full bg-stone-200/70 dark:bg-stone-900/70 border border-stone-300 dark:border-white/10">
-            🏛️ Systems for CDO Ayodhya
+            🏛️ Full-Stack Systems for CDO Ayodhya
           </span>
         </motion.div>
 
@@ -386,6 +398,25 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             <Mail className="w-4 h-4" />
           </a>
         </motion.div>
+
+        {/* Scroll cue */}
+        <motion.a
+          href="#about"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.15, duration: 0.8 }}
+          className="mt-14 inline-flex flex-col items-center gap-2 text-[10px] font-mono uppercase tracking-[0.28em] text-stone-500 hover:text-neon-cyan transition-colors"
+          aria-label="Scroll to the next section"
+        >
+          <span>Scroll to explore</span>
+          <motion.span
+            animate={{ y: [0, 7, 0], opacity: [0.4, 1, 0.4] }}
+            transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
+            className="flex h-9 w-5 items-start justify-center rounded-full border border-current pt-1.5"
+          >
+            <ChevronDown className="w-3.5 h-3.5" />
+          </motion.span>
+        </motion.a>
       </div>
 
       {/* Recruiter & Employer Quick Pitch Modal */}

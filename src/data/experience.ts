@@ -19,42 +19,61 @@ export const experiences: ExperienceItem[] = [
     period: "Aug 2026 – Feb 2027",
     badge: "Current / Active",
     description: [
-      "Architecting and maintaining production-grade real-time monitoring and observability dashboards using Grafana and Prometheus.",
-      "Configuring granular metric exporters to track mission-critical system health, uptime, latency, and application-level performance metrics.",
-      "Developing proactive alert rules, threshold notifications, and diagnostic panels to detect runtime anomalies before service degradation occurs."
+      "Engineered real-time multi-channel computer vision pipelines on NVIDIA Jetson AGX using the DeepStream SDK and GStreamer, ingesting live RTSP camera streams for low-latency, on-device AI inference in production.",
+      "Developed a PyQt5-based GUI streamer to display and control DeepStream video feeds, giving operators a single-pane, interactive interface for live multi-camera inference output and cutting response time.",
+      "Built and maintained distributed observability dashboards in Grafana and Prometheus tracking 10+ system-health and application-level metrics, ensuring zero-downtime visibility across live infrastructure.",
+      "Worked hands-on with CUDA-accelerated GPU inference, edge AI deployment, fault-tolerant system design and scalable observability pipelines in a mission-critical production environment.",
     ],
-    skills: ["Grafana", "Prometheus", "System Monitoring", "Linux", "DevOps", "Metric Exporters"],
-    icon: "Activity"
+    skills: [
+      "DeepStream SDK",
+      "GStreamer",
+      "NVIDIA Jetson AGX",
+      "CUDA",
+      "PyQt5",
+      "RTSP",
+      "Grafana",
+      "Prometheus",
+    ],
+    icon: "Activity",
   },
   {
     id: "iiit-nr",
-    role: "AI Research Intern",
+    role: "AI Research Intern — Full-Stack & Data Engineering",
     organization: "IIIT Naya Raipur",
     location: "Naya Raipur, Chhattisgarh, India",
     period: "May 2026 – Jul 2026",
     badge: "Research & Publication",
     description: [
-      "Conducted a rigorous critical evaluation of an existing IEEE Access multi-agent AI system (CowNet-AI) across real-world dairy cattle benchmark datasets.",
-      "Identified 10 systemic deployment and architectural gaps, including communication latency overheads, edge disconnect vulnerabilities, and absence of explainability.",
-      "Co-authored an IEEE-format research paper proposing an edge-cloud hybrid architecture featuring temporal graph transformers, multimodal sensor fusion, SHAP/LIME explainability, and privacy-preserving federated learning.",
-      "Presented the peer-reviewed research findings at ICNACT 2026 (3rd International Conference on Nonlinear Analysis & Computational Techniques), VIT Bhopal University."
+      "Identified 10 specific deployment and architectural gaps in CowNet-AI, a published IEEE Access multi-agent system, through structured critical analysis against benchmark data — the evidence base for a novel architecture proposal.",
+      "Co-authored an IEEE-format research paper proposing an edge-cloud hybrid architecture with temporal graph transformers, multimodal sensor fusion, federated learning and SHAP/LIME explainability for precision livestock monitoring.",
+      "Presented the research at ICNACT 2026 (3rd International Conference on Nonlinear Analysis & Computational Techniques), VIT Bhopal University, gaining international peer-reviewed exposure.",
+      "Designed and shipped a multi-tiered full-stack platform (Next.js, Node.js, MongoDB Atlas) end to end under a 6-week deadline, integrating third-party APIs with graceful-degradation fallbacks.",
     ],
-    skills: ["Applied AI/ML", "Temporal Graph Transformers", "Multimodal Fusion", "SHAP/LIME", "Federated Learning", "IEEE Paper"],
-    icon: "Brain"
+    skills: [
+      "Applied AI/ML",
+      "Temporal Graph Transformers",
+      "Multimodal Fusion",
+      "SHAP/LIME",
+      "Federated Learning",
+      "Next.js",
+      "MongoDB Atlas",
+      "IEEE Paper",
+    ],
+    icon: "Brain",
   },
   {
     id: "cdo-ayodhya",
-    role: "Team Manager — CDO Intern",
-    organization: "Chief Development Office",
+    role: "Team Manager — CDO Intern (Full-Stack)",
+    organization: "Chief Development Office, Ayodhya · Govt. of UP",
     location: "Ayodhya, Uttar Pradesh, India",
     period: "Apr 2025 – Jun 2025",
     badge: "Leadership & Deployment",
     description: [
-      "Spearheaded a cross-functional engineering team to design, build, and deploy a full-stack Self Help Group (SHG) Inventory Management System from inception through field deployment.",
-      "Engineered real-time inventory tracking, daily sales and net profit analytics pipelines, and dynamic QR-code data ingestion to eliminate manual ledger errors.",
-      "Conducted user research and iterative testing with administrative officials and rural self-help groups, cutting data processing turnaround times significantly."
+      "Led a cross-functional team of engineers to design, build and ship a full-stack SHG Inventory Management System end to end — requirements through production deployment — cutting manual stock-entry errors for Self Help Group operators.",
+      "Delivered live inventory tracking, sales and profit monitoring, and QR-code data ingestion as core features, improving operational efficiency and real-time stock visibility for non-technical, field-level users.",
+      "Ran requirements gathering and iterative field testing with administrative officials and rural SHG operators, translating feedback directly into shipped features.",
     ],
-    skills: ["React", "Node.js", "MongoDB", "QR Data Ingestion", "Team Leadership", "Agile Management"],
-    icon: "Users"
-  }
+    skills: ["React", "Node.js", "MongoDB", "QR Data Ingestion", "Team Leadership", "Agile Delivery"],
+    icon: "Users",
+  },
 ];

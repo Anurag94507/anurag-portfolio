@@ -42,7 +42,7 @@ const pageSequence: { id: PageId; title: string; subtitle: string; icon: React.R
   { id: 'projects', title: 'Projects & Labs', subtitle: 'Full-stack & open-source engineering', icon: <Code className="w-4 h-4" /> },
   { id: 'experience', title: 'Experience & Impact', subtitle: 'C-DAC, IIIT Raipur & Ayodhya Gov', icon: <Briefcase className="w-4 h-4" /> },
   { id: 'research', title: 'AI Research & Paper', subtitle: 'ICNACT 2026 IEEE publication & gaps', icon: <FlaskConical className="w-4 h-4" /> },
-  { id: 'skills', title: 'Technical Arsenal', subtitle: 'DevOps, cloud & languages radar', icon: <Code className="w-4 h-4" /> },
+  { id: 'skills', title: 'Technical Arsenal', subtitle: 'Languages, edge AI, cloud & tooling', icon: <Code className="w-4 h-4" /> },
   { id: 'certifications', title: 'Credentials & Honors', subtitle: 'Verified awards & coursework', icon: <Award className="w-4 h-4" /> },
   { id: 'contact', title: 'Contact & Inquiries', subtitle: 'Direct channel & interactive assistant', icon: <MessageSquare className="w-4 h-4" /> },
 ];
@@ -103,10 +103,10 @@ export const MultiPageView: React.FC<MultiPageViewProps> = ({
       <AnimatePresence mode="wait">
         <motion.div
           key={currentPage}
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -16 }}
-          transition={{ duration: 0.35, ease: 'easeOut' }}
+          initial={{ opacity: 0, y: 26, filter: 'blur(8px)' }}
+          animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+          exit={{ opacity: 0, y: -18, filter: 'blur(8px)' }}
+          transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
           className="flex-1"
         >
           {currentPage === 'home' && (
